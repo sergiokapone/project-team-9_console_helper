@@ -38,17 +38,17 @@ def build_contacts_table(records):
     return f"\033[0m{table}"
 
 
-def build_table_notes(data):
-    table = PrettyTable()
-    table.field_names = ["ID", "Tag", "Created", "Note"]
-    table.align["Note"] = "l"
-    for tag, notes in data.items():
-        for note in notes:
-            idx = note["id"]
-            created = note["created"].strftime("%Y-%m-%d %H:%M:%S")
-            text = note["text"]
-            table.add_row([idx, tag, created, text])
-    return table
+# def build_table_notes(data):
+#     table = PrettyTable()
+#     table.field_names = ["ID", "Tag", "Created", "Note"]
+#     table.align["Note"] = "l"
+#     for tag, notes in data.items():
+#         for note in notes:
+#             idx = note["id"]
+#             created = note["created"].strftime("%Y-%m-%d %H:%M:%S")
+#             text = note["text"]
+#             table.add_row([idx, tag, created, text])
+#     return table
 
 
 # ================================= Decorator ================================#
