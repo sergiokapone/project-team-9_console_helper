@@ -29,19 +29,41 @@ from .filesorter import main as sort_main
 
 
 def build_contacts_table(records):
+    # Colors
+    G = "\033[0;32;40m"  # GREEN
+    B = "\033[96m"  # Blue
+    P = "\033[95m"  # Red
+    N = "\033[0m"  # Reset
+    Y = "\033[0;33;40m"  # Yellow
     table = PrettyTable()
     table.field_names = ["Name", "Phone", "Birthday", "Email", "Address"]
     for record in records:
         table.add_row(
             [
-                record.data["name"].value,
-                record.show_data("phone"),
-                record.show_data("birthday"),
-                record.show_data("email"),
-                record.show_data("address"),
+                G + record.data["name"].value + N,
+                B + record.show_data("phone") + N,
+                Y + record.show_data("birthday") + N,
+                P + record.show_data("email") + N,
+                Y + record.show_data("address") + N,
             ]
         )
-    return f"\033[0m{table}"
+    return f"{N}{table}"
+
+
+# def build_contacts_table(records):
+#     table = PrettyTable()
+#     table.field_names = ["Name", "Phone", "Birthday", "Email", "Address"]
+#     for record in records:
+#         table.add_row(
+#             [
+#                 record.data["name"].value,
+#                 record.show_data("phone"),
+#                 record.show_data("birthday"),
+#                 record.show_data("email"),
+#                 record.show_data("address"),
+#             ]
+#         )
+#     return f"\033[0m{table}"
 
 
 # def build_table_notes(data):
