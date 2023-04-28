@@ -143,7 +143,7 @@ def set_birthday(*args):
 
 @input_error
 def set_phone(*args):
-    """Добавляет телефонный номер в контакт по имени."""
+    """Додає телефонный номер в контакт по імені."""
 
     if not args[0]:
         raise KeyError("Give me a name, please")
@@ -160,6 +160,24 @@ def set_phone(*args):
     record.add_data("phone", phone.value)
 
     return f"I added a phone {args[1]} to contact {args[0]}"
+
+
+@input_error
+def add_contact(*args):
+    """Додає контакт по імені."""
+
+    if not args[0]:
+        raise KeyError("Give me a name, please")
+
+    name = Name(args[0])
+
+    if name.value in contacts.data:
+        record = contacts.data[name.value]
+    else:
+        record = Record(name)
+        contacts.add_record(record)
+
+    return f"I added a contact {args[0]} to Addressbook"
 
 
 @input_error
@@ -341,11 +359,12 @@ def sort_folder(*args):
 COMMANDS = {
     "help": help_commands,
     "hello": hello,
+    "add contact": add_contact,
+    "set phone": set_phone,
+    "set email": set_email,
+    "set address": set_address,
     "set birthday": set_birthday,
     "upcoming birthdays": upcoming_birthdays,
-    "set email": set_email,
-    "set phone": set_phone,
-    "set address": set_address,
     "show contacts": show_contacts,
     "show contact": show_contact,
     "remove contact": remove,

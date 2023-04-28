@@ -10,6 +10,7 @@ Console Helper supports the following commands:
 - `hello`: Greets the user.
 - `set birthday`: Allows the user to set their birthday.
 - `upcoming birthdays`: Shows the list of upcoming birthdays.
+- `add contact`: Add a contact to the address book.
 - `set email`: Allows the user to set their email address.
 - `set phone:` Allows the user to set their phone number.
 - `set address`: Allows the user to set their address.
