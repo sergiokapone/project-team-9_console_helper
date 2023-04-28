@@ -7,8 +7,9 @@ from difflib import get_close_matches
 
 from prettytable import PrettyTable
 
-from rich.markdown import Markdown
-from rich.console import Console
+from pygments import highlight
+from pygments.lexers import get_lexer_by_name
+from pygments.formatters import TerminalFormatter
 
 from .addressbook import (
     Name,
@@ -300,11 +301,10 @@ def help_commands(*args):
         return f"\033[1;31mFile {file_path} not found.\033[0m"
 
     with open(file_path, "r") as file:
-        md_content = file.read()
-        md = Markdown(md_content)
-        console = Console()
-        console.print(md)
-        return ""
+        code = file.read()
+        lexer = get_lexer_by_name("markdown")
+        formatted_code = highlight(code, lexer, TerminalFormatter())
+        return formatted_code
 
     # table = PrettyTable()
     # table.field_names = ["Command"]
