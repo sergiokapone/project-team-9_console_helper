@@ -25,16 +25,19 @@ from .serializer import PickleStorage
 
 from .filesorter import main as sort_main
 
+# ============================== ANSI Colors =================================#
+
+G = "\033[0;32;40m"  # GREEN
+B = "\033[96m"  # Blue
+P = "\033[95m"  # Pink
+R = "\033[1;31m"  # Red
+N = "\033[0m"  # Reset
+Y = "\033[0;33;40m"  # Yellow
+
 # ============================ Tables decoration =============================#
 
 
 def build_contacts_table(records):
-    # Colors
-    G = "\033[0;32;40m"  # GREEN
-    B = "\033[96m"  # Blue
-    P = "\033[95m"  # Red
-    N = "\033[0m"  # Reset
-    Y = "\033[0;33;40m"  # Yellow
     table = PrettyTable()
     table.field_names = ["Name", "Phone", "Birthday", "Email", "Address"]
     for record in records:
@@ -87,13 +90,13 @@ def input_error(func):
         try:
             return func(*func_args, **func_kwargs)
         except KeyError as error:
-            return "\033[1;31m{}\033[0m".format(str(error).strip("'"))
+            return "{}".format(R + str(error).strip("'") + N)
         except ValueError as error:
-            return f"\033[1;31m{str(error)}\033[0m"
+            return f"{R+str(error)+N}"
         except TypeError as error:
-            return f"\033[1;31m{str(error)}\033[0m"
+            return f"{R + str(error) + N}"
         except FileNotFoundError:
-            return "\033[1;31mFile not found\033[0m"
+            return R + "File not found" + N
 
     return wrapper
 
@@ -116,9 +119,9 @@ def undefined(*args):
         matches = get_close_matches(args[0], list(COMMANDS.keys()))
         if matches:
             suggestion = matches[0]
-            return f"Command \033[1;31m{args[0]}\033[32m not found. Possibly you mean \033[1;93m{suggestion}\033[32m?"
+            return f"Command {R + args[0] + N} not found. Possibly you mean {Y + suggestion + N}?"
         else:
-            return "\033[32mWhat do you mean?\033[0m"
+            return R + "What do you mean?" + N
 
 
 @input_error
@@ -256,7 +259,7 @@ def search(*args):
     results = contacts.search(args[0])
 
     if results:
-        return f"\033[0m{build_contacts_table(results)}"
+        return f"{N + build_contacts_table(results)}"
     return "By your request found nothing"
 
 
@@ -304,7 +307,7 @@ def show_contacts(*args):
     )
     for tab in contacts.iterator(number_of_entries):
         if tab == "continue":
-            input("\033[1;32mPress <Enter> to continue...\033[0m")
+            input(G + "Press <Enter> to continue..." + N)
         else:
             print(build_contacts_table(tab.values()))
 
@@ -320,7 +323,7 @@ def help_commands(*args):
 
     file_path = "readme.md"
     if not os.path.exists(file_path):
-        return f"\033[1;31mFile {file_path} not found.\033[0m"
+        return R + "File {file_path} not found." + N
 
     with open(file_path, "r") as file:
         code = file.read()
@@ -358,7 +361,7 @@ def help_commands(*args):
 
 def show_contactsupcoming_birthdays(*args):
     results = contacts.upcoming_birthdays(args[0])
-    return f"\033[0m{build_contacts_table(results)}"
+    return f"{N + build_contacts_table(results)}"
 
 
 @input_error
@@ -457,7 +460,9 @@ CONTACT_FILE = "contacts.bin"
 def main():
     os.system("cls" if os.name == "nt" else "clear")
     print(
-        "\033[1;32mHello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType help, for more information.\033[0m"
+        G
+        + "Hello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType help, for more information."
+        + N
     )
     load(CONTACT_FILE)
     # load_notes(NOTES_FILE)
@@ -472,7 +477,7 @@ def main():
         params = parse_command(command)
         handler = get_handler(*params)
         response = handler(*params[1:])
-        print(f"\033[1;32m{response}\033[0m")
+        print(f"{G + response + N}")
 
         if response == "Good bye!":
             return None
