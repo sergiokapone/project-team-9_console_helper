@@ -4,7 +4,7 @@ import random
 from pathlib import Path
 
 
-from normaliser import normalise
+from .normaliser import normalise
 
 EXT_FOLDER = {
     ("mp3", "ogg", "waw", "amr"): "audio",
