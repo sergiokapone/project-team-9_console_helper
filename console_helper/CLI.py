@@ -282,22 +282,22 @@ def help_commands(*args):
     return f"\nPlease type followed commands:\n\033[0m{table}"
 
 
-def add_note(*args):
-    notes.add(args[0], args[1])
-    return "I had added note."
+# def add_note(*args):
+#     notes.add(args[0], args[1])
+#     return "I had added note."
 
 
-def show_notes(*args):
-    return f"\033[0m{build_table_notes(notes.display())}\033[0m"
+# def show_notes(*args):
+#     return f"\033[0m{build_table_notes(notes.display())}\033[0m"
 
 
-def search_notes(*args):
-    return f"\033[0m{build_table_notes(notes.find_notes(args[0]))}\033[0m"
+# def search_notes(*args):
+#     return f"\033[0m{build_table_notes(notes.find_notes(args[0]))}\033[0m"
 
 
-def remove_note(*args):
-    notes.remove_note(args[0])
-    return "Note deleted"
+# def remove_note(*args):
+#     notes.remove_note(args[0])
+#     return "Note deleted"
 
 
 def show_contactsupcoming_birthdays(*args):
@@ -341,10 +341,10 @@ COMMANDS = {
     "search contact": show_contact,
     "export": export_to_csv,
     "import": import_from_csv,
-    "add note": add_note,
-    "show notes": show_notes,
-    "search notes": search_notes,
-    "remove note": remove_note,
+    # "add note": add_note,
+    # "show notes": show_notes,
+    # "search notes": search_notes,
+    # "remove note": remove_note,
     "sort folder": sort_folder,
 }
 
