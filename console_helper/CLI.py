@@ -1,9 +1,14 @@
 """Реалізація інтерфейсу командного рядка"""
 
 import re
+import os
+import os.path
 from difflib import get_close_matches
 
 from prettytable import PrettyTable
+
+from rich.markdown import Markdown
+from rich.console import Console
 
 from .addressbook import (
     Name,
@@ -78,7 +83,7 @@ def hello(*args):
 
 
 def good_bye(*args):
-    PickleStorage.export_file(list(contacts.data.items()), contacts)
+    PickleStorage.export_file(contacts, CONTACT_FILE)
     return "Good bye!"
 
 
@@ -272,14 +277,25 @@ def show_contacts(*args):
 def help_commands(*args):
     """Функція показує перелік всіх команд."""
 
-    table = PrettyTable()
-    table.field_names = ["Command"]
-    table.min_width.update({"Command": 20})
+    file_path = "readme.md"
+    if not os.path.exists(file_path):
+        return f"\033[1;31mFile {file_path} not found.\033[0m"
 
-    for command in COMMANDS:
-        table.add_row([command])
+    with open(file_path, "r") as file:
+        md_content = file.read()
+        md = Markdown(md_content)
+        console = Console()
+        console.print(md)
+        return ""
 
-    return f"\nPlease type followed commands:\n\033[0m{table}"
+    # table = PrettyTable()
+    # table.field_names = ["Command"]
+    # table.min_width.update({"Command": 20})
+
+    # for command in COMMANDS:
+    #     table.add_row([command])
+
+    # return f"\nPlease type followed commands:\n\033[0m{table}"
 
 
 # def add_note(*args):
@@ -398,7 +414,10 @@ CONTACT_FILE = "contacts.bin"
 
 
 def main():
-    print("\033[1;32mHello, I'm an assistant. Type help if you need.\033[0m")
+    os.system("cls" if os.name == "nt" else "clear")
+    print(
+        "\033[1;32mHello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType help, for more information.\033[0m"
+    )
     load(CONTACT_FILE)
     # load_notes(NOTES_FILE)
     while True:
@@ -421,5 +440,4 @@ def main():
 # ================================ main program ============================= #
 
 if __name__ == "__main__":
-
     main()
