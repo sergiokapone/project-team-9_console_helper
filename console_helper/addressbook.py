@@ -126,9 +126,9 @@ class Record(UserDict):
         else:
             raise ValueError(f"Invalid data type: {data_type}")
 
-    # def show_data(self, data_type):
-    #     data_value = self.data.get(data_type)
-    #     return data_value.value if data_value else "-"
+    def show_data(self, data_type):
+        data_value = self.data.get(data_type)
+        return data_value.value if data_value else "-"
 
     def remove_data(self, data_type):
         """Видаляє відповдіне поле в запис"""
