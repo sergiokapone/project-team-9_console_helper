@@ -82,4 +82,8 @@ notebook.add_record(record1)
 notebook.add_record(record2)
 
 record1.change_text("What doesn't kill you makes you stronger")
+
+print(notebook.find_record_by_text("text"))
+print(notebook.find_record_by_date("29 April 2023"))
+print(notebook.find_record_by_tags("job"))
 print(notebook.find_record_by_id(1))
