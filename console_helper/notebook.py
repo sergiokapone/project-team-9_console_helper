@@ -10,8 +10,8 @@ class Notebook(UserDict):
         Notebook.id_count += 1
 
     def delete_record_by_id(self, record_id):
-        if self.data[record_id]:
-            del self.data[record_id]
+        if self.data[str(record_id)]:
+            del self.data[str(record_id)]
 
     def find_record_by_tags(self, tag):
         result = []
@@ -24,10 +24,12 @@ class Notebook(UserDict):
         return f"Tag '{tag}' not found"
 
     def find_record_by_text(self, text_part):
-
+        result = []
         for record in self.data.values():
             if text_part in record.text:
-                return record
+                result.append(str(record) + " ")
+        if result:
+            return result
         return f"The text '{text_part}' not found"
 
     def find_record_by_date(self, date):
@@ -83,7 +85,3 @@ notebook.add_record(record2)
 
 record1.change_text("What doesn't kill you makes you stronger")
 
-print(notebook.find_record_by_text("text"))
-print(notebook.find_record_by_date("29 April 2023"))
-print(notebook.find_record_by_tags("job"))
-print(notebook.find_record_by_id(1))
