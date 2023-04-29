@@ -110,6 +110,7 @@ def hello(*args):
 
 def good_bye(*args):
     PickleStorage.export_file(contacts, CONTACT_FILE)
+    os.system("cls" if os.name == "nt" else "clear")
     return "Good bye!"
 
 
