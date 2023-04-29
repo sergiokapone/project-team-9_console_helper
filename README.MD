@@ -1,6 +1,6 @@
 # Console Helper (command project)
 
-Console Helper is a Python-based command-line assistant that allows you to manage your contacts and notes.
+Console Assistant is a `python 3.x`-based command-line assistant that allows you to manage your contacts and notes.
 
 ## Commands
 
