@@ -12,7 +12,9 @@ Console Helper supports the following commands:
 - `set phone:` Allows the user to set their phone number.
 - `remove phone:` Removes the user phone number.
 - `set email`: Allows the user to set their email address.
+- `remove email:` Removes the user email.
 - `set address`: Allows the user to set their address.
+- `remove address:` Removes the user address.
 - `set birthday`: Allows the user to set their birthday.
 - `upcoming birthdays`: Shows the list of upcoming birthdays.
 - `show contacts`: Shows the list of saved contacts.

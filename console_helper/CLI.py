@@ -130,10 +130,9 @@ def save(*args):
     return f"File {args[0]} saved"
 
 
-# @input_error
-# def save_notes(*args):
-#     PickleStorage.export_file(notes, args[0])
-#     return f"File {args[0]} saved"
+@input_error
+def save_notes(*args):
+    ...
 
 
 @input_error
@@ -147,24 +146,38 @@ def load(*args):
 
 
 @input_error
-def set_birthday(*args):
-    """Функція-handler додає день народження до контакту."""
+def add_contact(*args):
+    """Додає контакт по імені."""
 
-    if not args[0] or args[0].isdigit():
+    if not args[0]:
         raise KeyError("Give me a name, please")
-    if not args[1]:
-        raise ValueError("Give me a date, please")
 
-    name, birthday = Name(args[0]), Birthday(args[1])
+    name = Name(args[0])
 
     if name.value in contacts.data:
         record = contacts.data[name.value]
     else:
         record = Record(name)
         contacts.add_record(record)
-    record.add_data("birthday", birthday.value)
 
-    return f"I added a birthday {args[1]} to contact {args[0]}"
+    return f"I added a contact {args[0]} to Addressbook"
+
+
+@input_error
+def remove(*args):
+    """Функція-handler видаляє запис з книги."""
+
+    if not args[0]:
+        raise KeyError("Give me a name, please")
+
+    name = Name(args[0])
+
+    if name.value in contacts:
+        del contacts[name.value]
+    else:
+        raise KeyError(f"Name {args[0]} does not exist in addressbook.")
+
+    return f"Contact {name.value} was removed"
 
 
 @input_error
@@ -205,26 +218,8 @@ def remove_phone(*args):
 
 
 @input_error
-def add_contact(*args):
-    """Додає контакт по імені."""
-
-    if not args[0]:
-        raise KeyError("Give me a name, please")
-
-    name = Name(args[0])
-
-    if name.value in contacts.data:
-        record = contacts.data[name.value]
-    else:
-        record = Record(name)
-        contacts.add_record(record)
-
-    return f"I added a contact {args[0]} to Addressbook"
-
-
-@input_error
 def set_email(*args):
-    """Добавляет email номер в контакт по имени."""
+    """Додає email номер в контакті по імені."""
 
     if not args[0]:
         raise KeyError("Give me a name, please")
@@ -242,6 +237,22 @@ def set_email(*args):
     record.add_data("email", email.value)
 
     return f"I added a email {args[1]} to contact {args[0]}"
+
+
+@input_error
+def remove_email(*args):
+    """Видаляє email в контакті по імені."""
+
+    if not args[0]:
+        raise KeyError("Give me a name, please")
+
+    name = Name(args[0])
+
+    if name.value in contacts.data:
+        record = contacts.data[name.value]
+        record.remove_data("email")
+
+    return f"I removed a email of contact {args[0]}"
 
 
 @input_error
@@ -267,6 +278,52 @@ def set_address(*args):
 
 
 @input_error
+def remove_address(*args):
+    """Видаляє email в контакті по імені."""
+
+    if not args[0]:
+        raise KeyError("Give me a name, please")
+
+    name = Name(args[0])
+
+    if name.value in contacts.data:
+        record = contacts.data[name.value]
+        record.remove_data("address")
+
+    return f"I removed a address of contact {args[0]}"
+
+
+@input_error
+def set_birthday(*args):
+    """Функція-handler додає день народження до контакту."""
+
+    if not args[0] or args[0].isdigit():
+        raise KeyError("Give me a name, please")
+    if not args[1]:
+        raise ValueError("Give me a date, please")
+
+    name, birthday = Name(args[0]), Birthday(args[1])
+
+    if name.value in contacts.data:
+        record = contacts.data[name.value]
+    else:
+        record = Record(name)
+        contacts.add_record(record)
+    record.add_data("birthday", birthday.value)
+
+    return f"I added a birthday {args[1]} to contact {args[0]}"
+
+
+@input_error
+def upcoming_birthdays(*args):
+    if not args[0]:
+        raise TypeError("Set days you interested")
+    days = int(args[0])
+    result = contacts.upcoming_birthdays(days)
+    return build_contacts_table(result)
+
+
+@input_error
 def search(*args):
 
     if not args[0]:
@@ -279,35 +336,18 @@ def search(*args):
     return "By your request found nothing"
 
 
-@input_error
-def remove(*args):
-    """Функція-handler видаляє запис з книги."""
-
-    if not args[0]:
-        raise KeyError("Give me a name, please")
-
-    name = Name(args[0])
-
-    if name.value in contacts:
-        del contacts[name.value]
-    else:
-        raise KeyError(f"Name {args[0]} does not exist in addressbook.")
-
-    return f"Contact {name.value} was removed"
+# @input_error
+# def export_to_csv(*args):
+#     if not args[0]:
+#         raise TypeError("Set file name, please")
+#     contacts.export_file(args[0])
+#     return f"File {args[0]} exported to csv"
 
 
-@input_error
-def export_to_csv(*args):
-    if not args[0]:
-        raise TypeError("Set file name, please")
-    contacts.export_file(args[0])
-    return f"File {args[0]} exported to csv"
-
-
-@input_error
-def import_from_csv(*args):
-    contacts.import_file(args[0])
-    return f"File {args[0]} imported from csv"
+# @input_error
+# def import_from_csv(*args):
+#     contacts.import_file(args[0])
+#     return f"File {args[0]} imported from csv"
 
 
 @input_error
@@ -384,15 +424,6 @@ def show_contactsupcoming_birthdays(*args):
 
 
 @input_error
-def upcoming_birthdays(*args):
-    if not args[0]:
-        raise TypeError("Set days you interested")
-    days = int(args[0])
-    result = contacts.upcoming_birthdays(days)
-    return build_contacts_table(result)
-
-
-@input_error
 def sort_folder(*args):
     sort_main(args[0])
     return f"Folder {args[0]} sorted"
@@ -407,7 +438,9 @@ COMMANDS = {
     "set phone": set_phone,
     "remove phone": remove_phone,
     "set email": set_email,
+    "remove email": remove_email,
     "set address": set_address,
+    "remove address": remove_address,
     "set birthday": set_birthday,
     "upcoming birthdays": upcoming_birthdays,
     "show contacts": show_contacts,
@@ -419,8 +452,8 @@ COMMANDS = {
     "save": save,
     "load": load,
     "search contact": show_contact,
-    "export": export_to_csv,
-    "import": import_from_csv,
+    # "export": export_to_csv,
+    # "import": import_from_csv,
     # "add note": add_note,
     # "show notes": show_notes,
     # "search notes": search_notes,
