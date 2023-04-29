@@ -152,6 +152,8 @@ class Record(UserDict):
 
 class AddressBook(UserDict):
     def add_record(self, record: Record):
+        """Метод додає запис в книгу"""
+
         name = record.data["name"].value
         if name in self.data:
             existing_record = self.data[name]
@@ -162,10 +164,14 @@ class AddressBook(UserDict):
             self.data[name] = record
 
     def remove_record(self, name):
+        """Метод видаляє запис в книзі по імені"""
+
         if name in self.data:
             del self.data[name]
 
     def find_records(self, search_term):
+        """Метод шукає записи в книзі про search_term"""
+
         return [
             record
             for record in self.data.values()
@@ -173,12 +179,15 @@ class AddressBook(UserDict):
         ]
 
     def show_records(self):
+        """Метод виводить всі записи в книзі"""
+
         return [record for record in self.data.values()]
 
     def __str__(self):
         return "\n\n".join([str(record) for record in self.data.values()])
 
     def upcoming_birthdays(self, days):
+        """Метод виводить список контактів у яких день народження протягоь days днів"""
         today = datetime.today().date()
         upcoming = today + timedelta(days=days)
         result = []
