@@ -21,14 +21,14 @@ Console Helper supports the following commands:
 - `show contact`: Shows the details of a specific contact.
 - `search contact`: Searches for a specific contact by name.
 - `remove contact`: Removes a contact from the list.
-- `good bye`, `close`, `exit`: Exits the program.
-- `save`: Saves the data to a file.
-- `load`: Loads the data from a file.
 - `add note`: Adds a note.
 - `show notes`: Shows the list of saved notes.
 - `search notes`: Searches for a specific note by title or date.
 - `remove note`: Removes a note from the list.
+- `save`: Saves the data to a file.
+- `load`: Loads the data from a file.
 - `sort folder`: Sorts the notes in ascending or descending order by date or title.
+- `good bye`, `close`, `exit`: Exits the program.
 
 ## Usage
 
