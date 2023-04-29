@@ -365,14 +365,13 @@ def show_contacts(*args):
         else 100
     )
 
-
     for tab in contacts.iterator(number_of_entries):
         if tab == "continue":
             input(G + "Press <Enter> to continue..." + N)
         else:
             print(build_contacts_table(tab.values()))
 
-    return f"Address book contain {len(contacts)} contacts"
+    return f"Address book contain {len(contacts)} contact(s)"
 
 
 # record = contacts.show_records()
