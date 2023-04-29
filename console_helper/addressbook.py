@@ -194,17 +194,6 @@ class AddressBook(UserDict):
                     result.append(record)
         return result
 
-    # def iterator(self, n: int = 10):
-    #     """Метод ітерується по записам і виводить їх частинами по n-штук."""
-
-    #     data_items = list(self.data.items())
-
-    #     for i in range(0, len(data_items), n):
-    #         data_slice = dict(data_items[i : i + n])
-    #         yield data_slice
-    #         if i + n < len(data_items):
-    #             yield "continue"
-
     def iterator(self, n: int = 10):
         """Метод ітерується по записам і виводить їх частинами по n-штук."""
 

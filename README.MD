@@ -1,6 +1,11 @@
-# Console Helper (command project)
+# Console фіішіефте (command project)
 
 Console Assistant is a `python 3.x`-based command-line assistant that allows you to manage your contacts and notes.
+
+## Run Assistant
+
+- To install a module in a virtual environment, type the `install` in console.
+- To start the assistant, type `assistant` in console.
 
 ## Commands
 
@@ -30,9 +35,9 @@ Console Helper supports the following commands:
 - `sort folder`: Sorts the notes in ascending or descending order by date or title.
 - `good bye`, `close`, `exit`: Exits the program.
 
-## Usage
+## Manage contacts
 
-You can type commands by following examples:
+To manage contacts in your address book, You can type commands by following examples:
 
 - `>>> show contacts 3` where `3` is a number of output records, `10` is by default
 - `>>> set phone Username 0935841245`
@@ -42,3 +47,10 @@ You can type commands by following examples:
 - `>>> show contact Username`
 - `>>> search contact 123` or `>>> search contact Se`
 - `>>> remove contact Username`
+
+## Manage notes
+
+To manage contacts in your address book, You can type commands by following examples:
+
+- `>>> add note Tag Text of your note` --- where `Tag` is a tag of your note,
+  and `Text` is a text of your note

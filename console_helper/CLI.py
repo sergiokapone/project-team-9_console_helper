@@ -515,9 +515,7 @@ CONTACT_FILE = "contacts.bin"
 def main():
     os.system("cls" if os.name == "nt" else "clear")
     print(
-        G
-        + "Hello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType help, for more information."
-        + N
+        f"{G}Hello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType {Y}help{G} for more information.{N}"
     )
     load(CONTACT_FILE)
     # load_notes(NOTES_FILE)
