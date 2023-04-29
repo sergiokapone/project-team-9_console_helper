@@ -189,6 +189,22 @@ def set_phone(*args):
 
 
 @input_error
+def remove_phone(*args):
+    """Видаляє телефонный номер в контакт по імені."""
+
+    if not args[0]:
+        raise KeyError("Give me a name, please")
+
+    name = Name(args[0])
+
+    if name.value in contacts.data:
+        record = contacts.data[name.value]
+        record.remove_data("phone")
+
+    return f"I removed a phone of contact {args[0]}"
+
+
+@input_error
 def add_contact(*args):
     """Додає контакт по імені."""
 
@@ -272,7 +288,10 @@ def remove(*args):
 
     name = Name(args[0])
 
-    del contacts[name.value]
+    if name.value in contacts:
+        del contacts[name.value]
+    else:
+        raise KeyError(f"Name {args[0]} does not exist in addressbook.")
 
     return f"Contact {name.value} was removed"
 
@@ -386,6 +405,7 @@ COMMANDS = {
     "hello": hello,
     "add contact": add_contact,
     "set phone": set_phone,
+    "remove phone": remove_phone,
     "set email": set_email,
     "set address": set_address,
     "set birthday": set_birthday,
