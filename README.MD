@@ -34,6 +34,7 @@ Console Helper supports the following commands:
 
 You can type commands by following examples:
 
+- `>>> show contacts 3` where `3` is a number of output records, `10` is by default
 - `>>> set phone Username 0935841245`
 - `>>> set birthday Username 12.12.1978`
 - `>>> set email my_name@gmail.com`

@@ -364,6 +364,8 @@ def show_contacts(*args):
         if args[0] is not None and isinstance(args[0], str) and args[0].isdigit()
         else 100
     )
+
+
     for tab in contacts.iterator(number_of_entries):
         if tab == "continue":
             input(G + "Press <Enter> to continue..." + N)
