@@ -1,8 +1,12 @@
-class Notetag:
-    pass
+from collections import namedtuple, UserList
+from datetime import datetime
 
 
-class Note(UserDict):
+class Tag:
+    ...
+
+
+class Note(namedtuple):
     def __init__(self):
         super().__init__()
         self.counter = 0
@@ -55,8 +59,8 @@ class Note(UserDict):
         return sorted_notes
 
 
-class Notebook(UserDict):
-    def add_note(self, text: Note, tag: Notetag):
+class Notebook(UserList):
+    def add_note(self, text: Note, tag: Tag):
         ...
 
     def remove_note(self, id):
