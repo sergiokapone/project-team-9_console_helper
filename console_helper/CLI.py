@@ -3,6 +3,7 @@
 import re
 import os
 import os.path
+from pathlib import Path
 from difflib import get_close_matches
 
 from prettytable import PrettyTable
@@ -87,7 +88,9 @@ def undefined(*args):
 
 @input_error
 def save(*args):
-    PickleStorage.export_file(contacts, args[0])
+    home_path = Path.home()
+    file_path = home_path / args[0]
+    PickleStorage.export_file(contacts, file_path)
     return f"File {args[0]} saved"
 
 
@@ -99,9 +102,11 @@ def save(*args):
 
 @input_error
 def load(*args):
-    if PickleStorage.is_file_exist(args[0]):
+    home_path = Path.home()
+    file_path = home_path / args[0]
+    if PickleStorage.is_file_exist(file_path):
         contacts.clear()
-        contacts.update(PickleStorage.import_file(args[0]))
+        contacts.update(PickleStorage.import_file(file_path))
         return f"File {args[0]} loaded"
     else:
         raise FileNotFoundError

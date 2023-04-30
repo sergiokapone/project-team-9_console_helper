@@ -1,7 +1,7 @@
 """Класи реалызують збереження книги контактыв та нотатника"""
 
-import pathlib
 import pickle
+from pathlib import Path
 
 
 class Storage:
@@ -15,22 +15,19 @@ class Storage:
 class PickleStorage(Storage):
     @staticmethod
     def export_file(obj, filename):
-        home_path = pathlib.Path.home()
-        file_path = home_path / filename
-        with file_path.open(mode="wb") as file:
+        filename = Path(filename)
+        with filename.open(mode="wb") as file:
             pickle.dump(obj, file)
 
     @staticmethod
     def import_file(filename):
-        home_path = pathlib.Path.home()
-        file_path = home_path / filename
-        with file_path.open(mode="rb") as file:
+        filename = Path(filename)
+        with filename.open(mode="rb") as file:
             return pickle.load(file)
 
     @staticmethod
     def is_file_exist(filename):
-        home_path = pathlib.Path.home()
-        file_path = home_path / filename
-        if file_path.exists():
+        filename = Path(filename)
+        if filename.exists():
             return True
         return False
