@@ -68,6 +68,6 @@ To manage contacts in your address book, You can type commands by following exam
 
 - `>>> add note Tag Text of your note` --- where `Tag` is a tag of your note.
 - `>>> add tag 1 Mytag` --- add tag `Mytag` to note with index `1`.
-- `remove note 2` --- remove note with index `2`.
-- `show notes` --- just show all notes.
-- `show notes Rec` --- show all notes with tag `Rec`.
+- `>>> remove note 2` --- remove note with index `2`.
+- `>>> show notes` --- just show all notes.
+- `>>> show notes Rec` --- show all notes with tag `Rec`.
