@@ -10,7 +10,6 @@ class Notebook(UserList):
         for order_number, value in enumerate(self.data):
             if order_number == record_id:
                 self.data.pop(record_id)
-
     """Здесь нужно добавить вывод сообщения с информацией об удаленной записи через return 'запись №record_id была удалена' или 'Запись не найдена'"""
 
     def find_record_by_tag(self, tag):
@@ -64,9 +63,8 @@ class Record:
     def __init__(self, note):
         self.note = Note(value=note)
         self.tags = []
-        self.date = datetime.today().strftime(
-            "%d %B %Y"
-        )  # date in format 30 April 2023
+        self.date = datetime.today().strftime("%d %B %Y")  # date in format 30 April 2023
+
 
     def add_tag(self, tag):
         self.tags.append(Tags(tag))
@@ -86,16 +84,15 @@ class Record:
 
 notebook = Notebook()
 
-record1 = Record(
-    "Your time is limited, so don’t waste it living someone else’s life. Don’t be trapped by dogma – which is living with the results of other people’s thinking"
-)
+
+record1 = Record("Your time is limited, so don’t waste it living someone else’s life. Don’t be trapped by dogma – which is living with the results of other people’s thinking")
+
 record1.add_tag("TAG1")
 record1.add_tag("TAG2")
 
 
-record2 = Record(
-    "The big lesson in life, baby, is never be scared of anyone or anything."
-)
+record2 = Record("The big lesson in life, baby, is never be scared of anyone or anything.")
+
 record2.add_tag("TAG1")
 
 notebook.add_record(record1)
