@@ -1,4 +1,4 @@
-# Console фіішіефте (command project)
+# Console Assistant (command project)
 
 Console Assistant is a `python 3.x`-based command-line assistant that allows
 you to manage your contacts and notes.
