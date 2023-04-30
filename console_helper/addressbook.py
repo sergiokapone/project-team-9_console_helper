@@ -170,6 +170,7 @@ class AddressBook(UserList):
             if (
                 search_term in record.name
                 or search_term in str(record.address)
+                or any(search_term in birthday.value for birthday in record.birthday)
                 or any(search_term in phone.value for phone in record.phones)
                 or any(search_term in email.value for email in record.emails)
             ):
