@@ -27,7 +27,7 @@ class Notebook(UserList):
         return [note for note in self.data if search_term in note.text]
 
     def sort_notes_by_tag(self):
-        self.data.sort(key=lambda note: tuple(note.tags))
+        return sorted(self.data, key=lambda note: tuple(note.tags))
 
     def add_tag(self, index, tag):
         note = self.data[index]

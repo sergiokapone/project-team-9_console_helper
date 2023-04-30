@@ -348,10 +348,13 @@ def display_notes_table(notes):
 
 @input_error
 def show_notes(*args):
-    return display_notes_table(notebook.display_notes())
+    if args[0]:
+        return display_notes_table(notebook.display_notes(tag=args[0]))
+    else:
+        return display_notes_table(notebook.display_notes())
 
 
-@input_error
+# @input_error
 def sort_notes(*args):
     return display_notes_table(notebook.sort_notes_by_tag())
 
