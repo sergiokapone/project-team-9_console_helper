@@ -73,7 +73,7 @@ class AddressBook(UserList):
                 return
 
         # Если контакта с таким именем еще нет, то создаем новый
-        birthday = [Birthday(address)] if birthday else []
+        birthday = [Birthday(birthday) for birthday in birthday] if birthday else []
         phones = [Phone(phone) for phone in phones] if phones else []
         emails = [Email(email) for email in emails] if emails else []
         address = [address] if address else []
@@ -128,7 +128,7 @@ class AddressBook(UserList):
                 record.birthday.clear()
                 record.birthday.append(Birthday(birthday))
                 return
-        return f"Contact with name {name} not found"
+        self.add_record(name=name, birthday=[birthday])
 
     def delete_phone_by_index(self, name, phone_index):
         for record in self.data:

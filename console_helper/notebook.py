@@ -40,6 +40,7 @@ class Notebook(UserList):
 
     def find_record_by_id(self, id_record):
         pass
+
     """Реализовать поиск заметки(note) по порядковому номеру - id"""
 
 
@@ -64,6 +65,7 @@ class Record:
         self.tags = []
         self.date = datetime.today().strftime("%d %B %Y")  # date in format 30 April 2023
 
+
     def add_tag(self, tag):
         self.tags.append(Tags(tag))
 
@@ -82,12 +84,15 @@ class Record:
 
 notebook = Notebook()
 
+
 record1 = Record("Your time is limited, so don’t waste it living someone else’s life. Don’t be trapped by dogma – which is living with the results of other people’s thinking")
+
 record1.add_tag("TAG1")
 record1.add_tag("TAG2")
 
 
 record2 = Record("The big lesson in life, baby, is never be scared of anyone or anything.")
+
 record2.add_tag("TAG1")
 
 notebook.add_record(record1)
