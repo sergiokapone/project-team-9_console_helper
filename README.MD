@@ -51,6 +51,7 @@ For example, in `Windows` is a folder `C:Users\<Usaer>\`
 - `save`: Saves the data to a file.
 - `load`: Loads the data from a file.
 - `sort folder`: Sorts the notes in ascending or descending order by date or title.
+- `edit note`: Edit note by index.
 
 ## Using - Manage contacts
 
@@ -65,6 +66,7 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> search contact SearchQuery` --- where `SearchQuery` some word
   or part of number for searching
 - `>>> remove contact Username`
+- `edit note 1 New text`: Edit note by `1`.
 
 ## Using - Manage notes
 

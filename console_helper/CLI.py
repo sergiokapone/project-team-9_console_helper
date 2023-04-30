@@ -371,6 +371,17 @@ def save_notes(*args):
 
 
 @input_error
+def edit_note(*args):
+
+    if not args[0]:
+        raise KeyError("Please, pu unteger index")
+
+    notebook.edit_note(int(args[0]), args[1])
+
+    return f"I edited note {args[0]}"
+
+
+@input_error
 def load_notes(*args):
     home_path = Path.home()
     file_path = home_path / args[0]
@@ -436,7 +447,10 @@ COMMANDS = {
     "remove note": remove_note,
     "show notes": show_notes,
     "sort notes": sort_notes,
+    "save notes": save_notes,
+    "load notes": load_notes,
     "search notes": search_notes,
+    "edit note": edit_note,
     # --- Sorting folder commnad ---
     "sort folder": sort_folder,
     # --- Googd bye commnad ---
