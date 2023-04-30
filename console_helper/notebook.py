@@ -1,70 +1,86 @@
-from collections import namedtuple, UserList
+from collections import UserDict
 from datetime import datetime
 
 
-class Tag:
-    ...
+class Notebook(UserDict):
+    id_count = 1
+
+    def add_record(self, record):
+        self.data[str(Notebook.id_count)] = record
+        Notebook.id_count += 1
+
+    def delete_record_by_id(self, record_id):
+        if self.data[str(record_id)]:
+            del self.data[str(record_id)]
+
+    def find_record_by_tags(self, tag):
+        result = []
+        for record in self.data.values():
+            for tag_ in record.tags:
+                if tag == str(tag_):
+                    result.append(str(record) + " ")
+        if result:
+            return result
+        return f"Tag '{tag}' not found"
+
+    def find_record_by_text(self, text_part):
+        result = []
+        for record in self.data.values():
+            if text_part in record.text:
+                result.append(str(record) + " ")
+        if result:
+            return result
+        return f"The text '{text_part}' not found"
+
+    def find_record_by_date(self, date):
+        for record in self.data.values():
+            if date == record.date:
+                return record
+        return f"Not found"
+
+    def find_record_by_id(self, id_record):
+        return self.data[str(id_record)] if str(id_record) in self.data else "Not found"
 
 
-class Note(namedtuple):
-    def __init__(self):
-        super().__init__()
-        self.counter = 0
-
-    def set_counter(self):
-        max_id = 0
-        for tag, notes in self.data.items():
-            for note in notes:
-                if note["id"] > max_id:
-                    max_id = note["id"]
-        self.counter = max_id
-
-    def add(self, tag, note_text):
-        max_id = max(
-            (note.get("id", 0) for notes in self.data.values() for note in notes),
-            default=-1,
-        )
-
-        note_id = max_id + 1
-        note = {"id": note_id, "text": note_text, "created": datetime.now()}
-        self.data.setdefault(tag, []).append(note)
-        self.counter = note_id
-
-    def remove_note(self, note_id):
-        for tag, notes in self.data.items():
-            for i, note in enumerate(notes):
-                if note["id"] == int(note_id):
-                    del self.data[tag][i]
-                    break
-
-    def display(self, tag=None):
-        return self
-
-    def find_notes(self, search_term):
-        result = {}
-        for tag, notes in self.data.items():
-            matching_notes = [
-                note
-                for note in notes
-                if search_term.lower() in str(note["text"]).lower()
-            ]
-            if matching_notes:
-                result[tag] = matching_notes
-        return result
-
-    def sort_notes_by_tag(self):
-        sorted_notes = {}
-        for tag in sorted(self.data.keys()):
-            sorted_notes[tag] = self.data[tag]
-        return sorted_notes
+class Field:
+    def __init__(self, value):
+        self.value = value
 
 
-class Notebook(UserList):
-    def add_note(self, text: Note, tag: Tag):
-        ...
+class Tags(Field):
+    def __str__(self):
+        return self.value
 
-    def remove_note(self, id):
-        ...
 
-    def change_note(self, id):
-        ...
+class Record:
+    def __init__(self, text):
+        self.text = text
+        self.tags = set()
+        self.date = datetime.today().strftime("%d %B %Y")
+
+    def add_tag(self, tag):
+        self.tags.add(Tags(tag))
+
+    def change_text(self, new_text):
+        self.text = new_text
+
+    def __str__(self):
+        result = self.text + " ("
+        for tag in self.tags:
+            result += str(tag) + ", "
+        return result + ") " + self.date
+
+
+notebook = Notebook()
+
+record1 = Record("Some text")
+record2 = Record("Another some text")
+
+record1.add_tag("work")
+record1.add_tag("job")
+record2.add_tag("work")
+
+notebook.add_record(record1)
+notebook.add_record(record2)
+
+record1.change_text("What doesn't kill you makes you stronger")

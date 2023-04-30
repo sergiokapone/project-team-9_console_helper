@@ -10,5 +10,10 @@ setup(
     include_package_data=True,
     packages=find_namespace_packages(),
     entry_points={"console_scripts": ["assistant = console_helper.CLI:main"]},
-    install_requires=["prettytable", "Pygments"],
+    install_requires=[
+        "prettytable",
+        "Pygments",
+        "transliterate",
+        "prompt-toolkit==3.0",
+    ],
 )

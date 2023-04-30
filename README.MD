@@ -4,15 +4,19 @@ Console Assistant is a `python 3.x`-based command-line assistant that allows you
 
 ## Run Assistant
 
-- To install a module in a virtual environment, type the `install` in console.
+- Crate virtual environment in folder contains `setup.py`
+- To install a module in a virtual environment, type the `install.cmd` in console.
 - To start the assistant, type `assistant` in console.
 
-## Commands
-
-Console Helper supports the following commands:
+## Hello and welcome commands
 
 - `help`: Displays a list of available commands and their descriptions.
 - `hello`: Greets the user.
+- `good bye`, `close`, `exit`: Exits the program.
+- `.` exits the program without messages.
+
+## Manage contacts commands
+
 - `add contact`: Add a contact to the address book.
 - `set phone:` Allows the user to set their phone number.
 - `remove phone:` Removes the user phone number.
@@ -26,6 +30,11 @@ Console Helper supports the following commands:
 - `show contact`: Shows the details of a specific contact.
 - `search contact`: Searches for a specific contact by name.
 - `remove contact`: Removes a contact from the list.
+- `save`: save contacts to file.
+- `load`: load contacts from file.
+
+## Manage notes commands
+
 - `add note`: Adds a note.
 - `show notes`: Shows the list of saved notes.
 - `search notes`: Searches for a specific note by title or date.
@@ -33,9 +42,8 @@ Console Helper supports the following commands:
 - `save`: Saves the data to a file.
 - `load`: Loads the data from a file.
 - `sort folder`: Sorts the notes in ascending or descending order by date or title.
-- `good bye`, `close`, `exit`: Exits the program.
 
-## Manage contacts
+## Using - Manage contacts
 
 To manage contacts in your address book, You can type commands by following examples:
 
@@ -45,10 +53,11 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> set email my_name@gmail.com`
 - `>>> upcoming birthdays 5`
 - `>>> show contact Username`
-- `>>> search contact 123` or `>>> search contact Se`
+- `>>> search contact SearchQuery` --- where `SearchQuery` some word
+  or part of number for searching
 - `>>> remove contact Username`
 
-## Manage notes
+## Using - Manage notes
 
 To manage contacts in your address book, You can type commands by following examples:
 
