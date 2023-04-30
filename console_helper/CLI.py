@@ -14,7 +14,7 @@ from pygments.formatters import TerminalFormatter
 
 from .addressbook import AddressBook
 
-# from .notebook import Notebook
+from .notebook import Notebook
 
 from .serializer import PickleStorage
 
@@ -94,12 +94,6 @@ def save(*args):
     return f"File {args[0]} saved"
 
 
-# @input_error
-# def save_notes(*args):
-#     PickleStorage.export_file(notebook, args[0])
-#     return f"File {args[0]} saved"
-
-
 @input_error
 def load(*args):
     home_path = Path.home()
@@ -110,15 +104,6 @@ def load(*args):
         return f"File {args[0]} loaded"
     else:
         raise FileNotFoundError
-
-
-# @input_error
-# def load_notes(*args):
-#     if PickleStorage.is_file_exist(args[0]):
-#         notebook.update(PickleStorage.import_file(args[0]))
-#         return f"File {args[0]} loaded"
-#     else:
-#         raise FileNotFoundError
 
 
 # ========================= Робота з контактами ============================= #
@@ -262,14 +247,6 @@ def search_contact(*args):
     return "By your request found nothing"
 
 
-# @input_error
-# def show_contact(*args):
-#     if not args[0]:
-#         raise TypeError("What contact are you search for?")
-#     record = contacts.find_records(args[0])
-#     return build_contacts_table(record)
-
-
 def pretty_print(contacts):
     table = PrettyTable()
     table.field_names = ["#", "Name", "Birthday", "Phones", "Emails", "Address"]
@@ -337,63 +314,72 @@ def show_contacts(*args):
 # ============================= Команди для нотаток ========================= #
 
 
-# @input_error
-# def add_note(*args):
-#     notebook.add_note([args[0]], args[1])
-#     return "I added note"
+@input_error
+def add_note(*args):
+    notebook.add_note([args[0]], args[1])
+    return "I added note"
 
 
-# @input_error
-# def remove_note(*args):
-#     notebook.remove_note(int(args[0]))
-#     return "I removed note"
+@input_error
+def remove_note(*args):
+    notebook.remove_note(int(args[0]))
+    return "I removed note"
 
 
-# @input_error
-# def add_tag(*args):
+@input_error
+def add_tag(*args):
 
-#     if not args[0].isdigit():
-#         raise TypeError("Index must be a number")
-#     notebook.add_tag(int(args[0]), args[1])
-#     return f"I addes tag {args[1]} to note {args[0]}"
-
-
-# def display_notes_table(notes):
-#     table = PrettyTable()
-#     table.field_names = ["Index", "Tags", "Cration Date", "Text"]
-#     for i, note in enumerate(notes):
-#         date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
-#         table.add_row(
-#             [f"{G}{i}{N}", ", ".join(note.tags), f"{Y}{date_str}{N}", note.text]
-#         )
-#     return f"{N + str(table)}"
+    if not args[0].isdigit():
+        raise TypeError("Index must be a number")
+    notebook.add_tag(int(args[0]), args[1])
+    return f"I addes tag {args[1]} to note {args[0]}"
 
 
-# @input_error
-# def show_notes(*args):
-#     return display_notes_table(notebook.display_notes())
+def display_notes_table(notes):
+    table = PrettyTable()
+    table.field_names = ["Index", "Tags", "Cration Date", "Text"]
+    for i, note in enumerate(notes):
+        date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
+        table.add_row(
+            [f"{G}{i}{N}", ", ".join(note.tags), f"{Y}{date_str}{N}", note.text]
+        )
+    return f"{N + str(table)}"
 
 
-# @input_error
-# def sort_notes(*args):
-#     return display_notes_table(notebook.sort_notes_by_tag())
-
-# def add_note(*args):
-#     notes.add(args[0], args[1])
-#     return "I had added note."
+@input_error
+def show_notes(*args):
+    return display_notes_table(notebook.display_notes())
 
 
-# def show_notes(*args):
-#     return f"\033[0m{build_table_notes(notes.display())}\033[0m"
+@input_error
+def sort_notes(*args):
+    return display_notes_table(notebook.sort_notes_by_tag())
 
 
-# def search_notes(*args):
-#     return f"\033[0m{build_table_notes(notes.find_notes(args[0]))}\033[0m"
+@input_error
+def save_notes(*args):
+    home_path = Path.home()
+    file_path = home_path / args[0]
+    PickleStorage.export_file(notebook, file_path)
+    return f"File {args[0]} saved"
 
 
-# def remove_note(*args):
-#     notes.remove_note(args[0])
-#     return "Note deleted"
+@input_error
+def load_notes(*args):
+    home_path = Path.home()
+    file_path = home_path / args[0]
+    if PickleStorage.is_file_exist(file_path):
+        notebook.clear()
+        notebook.update(PickleStorage.import_file(file_path))
+        return f"File {args[0]} loaded"
+    else:
+        raise FileNotFoundError
+
+
+@input_error
+def search_notes(*args):
+    return f"{G}{display_notes_table(notebook.find_notes(args[0]))}{N}"
+
 
 # =========================================================================== #
 def help_commands(*args):
@@ -439,12 +425,12 @@ COMMANDS = {
     "save": save,
     "load": load,
     # --- Manage notes ---
-    # "add note": add_note,
-    # "add tag": add_tag,
-    # "remove note": remove_note,
-    # "show notes": show_notes,
-    # "sort notes": sort_notes,
-    # "search notes": search_notes,
+    "add note": add_note,
+    "add tag": add_tag,
+    "remove note": remove_note,
+    "show notes": show_notes,
+    "sort notes": sort_notes,
+    "search notes": search_notes,
     # --- Sorting folder commnad ---
     "sort folder": sort_folder,
     # --- Googd bye commnad ---
@@ -498,7 +484,7 @@ def parse_command(command):
 # ================================ main function ============================ #
 
 contacts = AddressBook()  # Global variable for storing contacts
-# notebook = Notebook()  # Global variable for storing notes
+notebook = Notebook()  # Global variable for storing notes
 
 
 NOTES_FILE = "notes.bin"
@@ -511,13 +497,13 @@ def main():
         f"{G}Hello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType {Y}help{G} for more information.{N}"
     )
     load(CONTACT_FILE)
-    # load_notes(NOTES_FILE)
+    load_notes(NOTES_FILE)
     while True:
         command = wait_for_input(">>> ")
 
         if command.strip() == ".":
             save(CONTACT_FILE)
-            # save_notes(NOTES_FILE)
+            save_notes(NOTES_FILE)
             return
 
         params = parse_command(command)
