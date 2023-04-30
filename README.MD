@@ -38,6 +38,10 @@ For example, in `Windows` is a folder `C:Users\<Usaer>\`
 - `save`: save contacts to file.
 - `load`: load contacts from file.
 
+## Sorting Folder
+
+- `sort folder`: Sort folder. Usage `sort folder D:\MyGarbage\`
+
 ## Manage notes commands
 
 - `add note`: Adds a note.
