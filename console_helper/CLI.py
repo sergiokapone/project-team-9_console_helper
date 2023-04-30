@@ -264,7 +264,8 @@ def pretty_print(contacts):
                 phones_str,
                 emails_str,
                 f"{Y}{address}{N}",
-            ]
+            ],
+            divider=True,
         )
     return table
 
@@ -338,10 +339,12 @@ def add_tag(*args):
 def display_notes_table(notes):
     table = PrettyTable()
     table.field_names = ["Index", "Tags", "Cration Date", "Text"]
+    table.max_width["Text"] = 79
     for i, note in enumerate(notes):
         date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
         table.add_row(
-            [f"{G}{i}{N}", ", ".join(note.tags), f"{Y}{date_str}{N}", note.text]
+            [f"{G}{i}{N}", ", ".join(note.tags), f"{Y}{date_str}{N}", note.text],
+            divider=True,
         )
     return f"{N + str(table)}"
 
