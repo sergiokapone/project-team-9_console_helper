@@ -65,8 +65,10 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> show contact Username`
 - `>>> search contact SearchQuery` --- where `SearchQuery` some word
   or part of number for searching
-- `>>> remove contact Username`
-- `edit note 1 New text`: Edit note by `1`.
+- `>>> remove contact Username`.
+- `>>> remove phone Username 1` --- remove user phone by index `1`.
+- `>>> remove email Username 2` --- remove user email by index `2`.
+- `>>>edit note 1 New text`: Edit note by `1`.
 
 ## Using - Manage notes
 
