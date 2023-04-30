@@ -71,16 +71,15 @@ class Record:
         return result + ") " + self.date
 
 
-notebook = Notebook()
+class Notebook(UserList):
+    def add_note(self, text: Note, tag: Tag):
+        ...
 
-record1 = Record("Some text")
-record2 = Record("Another some text")
+    def remove_note(self, id):
+        ...
 
-record1.add_tag("work")
-record1.add_tag("job")
-record2.add_tag("work")
+    def change_note(self, id):
+        ...
 
-notebook.add_record(record1)
-notebook.add_record(record2)
 
 record1.change_text("What doesn't kill you makes you stronger")
