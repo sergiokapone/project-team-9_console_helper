@@ -26,7 +26,9 @@ with names
 - `good bye`, `close`, `exit`: Exits the program.
 - `.` exits the program without messages.
 
-## Manage contacts commands
+## Commands
+
+### Manage contacts commands
 
 - `add contact`: Add a contact to the address book.
 - `set phone:` Allows the user to set their phone number.
@@ -44,11 +46,11 @@ with names
 - `save`: save contacts to file.
 - `load`: load contacts from file.
 
-## Sorting Folder
+### Sorting Folder
 
 - `sort folder`: Sort folder.
 
-## Manage notes commands
+### Manage notes commands
 
 - `add note`: Adds a note.
 - `show notes`: Shows the list of saved notes.
