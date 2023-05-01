@@ -53,7 +53,7 @@ For example, in `Windows` is a folder `C:Users\<Usaer>\`
 - `sort folder`: Sorts the notes in ascending or descending order by date or title.
 - `edit note`: Edit note by index.
 
-## ====== Usage Examples ======
+## Usage Examples
 
 ### Sort folder
 
@@ -64,16 +64,14 @@ For example, in `Windows` is a folder `C:Users\<Usaer>\`
 To manage contacts in your address book, You can type commands by following examples:
 
 - `>>> show contacts` --- shows table of contacts in address book.
-- `>>> show contacts 3` where `3` is a number of output records, `10` is by default
+- `>>> show contacts 3` where `3` is a number of output records, `20` is by default
 - `>>> add contact Username` --- add empty contact `Username` to the address book.
 - `>>> set phone Username 0935841245` --- add phone[^1] to contact `Username` in address book.
-  If contact was absent
 - `>>> set birthday Username 12.12.1978` --- add birthday[^1] to contact `Username` in address book.
 - `>>> set email my_name@gmail.com` --- add email[^1] `my_name@gmail.com` to contact `Username` in address book.
 - `>>> upcoming birthdays 5` --- shows contacts with upcoming birthdays within `5` days.
 - `>>> show contact Username` --- show contact `Username` information.
-- `>>> search contact SearchQuery` --- where `SearchQuery` some word
-  or number for searching.
+- `>>> search contact SearchQuery` --- where `SearchQuery` some word or number for searching.
 - `>>> remove contact Username` --- remove contact `Uresname`
 - `>>> remove phone Username 1` --- remove user phone by index `1`.
 - `>>> remove email Username 2` --- remove user email by index `2`.
