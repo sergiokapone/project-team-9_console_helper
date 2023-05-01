@@ -9,7 +9,7 @@ For example, in `Windows` is a folder `C:Users\<Usaer>\`
 ## Install and Run Assistant
 
 - Clone repository `https://github.com/sergiokapone/project-team-9_console_helper.git`
-- Crate virtual environment in folder contains `setup.py`
+- Create virtual environment in folder contains `setup.py`
 - To install a module in a virtual environment, type the `install.cmd` in console.
 - To start the assistant, type `assistant` in console.
 
