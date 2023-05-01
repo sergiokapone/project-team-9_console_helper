@@ -218,7 +218,6 @@ def upcoming_birthdays(*args):
 
 @input_error
 def search_contact(*args):
-
     if not args[0]:
         raise KeyError("Give me a some string, please")
 
@@ -312,7 +311,6 @@ def remove_note(*args):
 
 @input_error
 def add_tag(*args):
-
     if not args[0].isdigit():
         raise TypeError("Index must be a number")
     notebook.add_tag(int(args[0]), args[1])
@@ -327,7 +325,12 @@ def display_notes_table(notes):
     for i, note in enumerate(notes):
         date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
         table.add_row(
-            [f"{G}{i}{N}", ", ".join(note.tags), f"{Y}{date_str}{N}", f"{B}{note.text}{N}],
+            [
+                f"{G}{i}{N}",
+                ", ".join(note.tags),
+                f"{Y}{date_str}{N}",
+                f"{B}{note.text}{N}",
+            ],
             divider=True,
         )
     return f"{N + str(table)}"
@@ -356,7 +359,6 @@ def save_notes(*args):
 
 @input_error
 def edit_note(*args):
-
     if not args[0]:
         raise KeyError("Please, pu unteger index")
 
