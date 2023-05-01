@@ -57,10 +57,13 @@ For example, in `Windows` is a folder `C:Users\<Usaer>\`
 
 To manage contacts in your address book, You can type commands by following examples:
 
+- `>>> show contacts` --- shows table of contacts in address book.
 - `>>> show contacts 3` where `3` is a number of output records, `10` is by default
-- `>>> set phone Username 0935841245`
-- `>>> set birthday Username 12.12.1978`
-- `>>> set email my_name@gmail.com`
+- `>>> add contact Username` --- add empty contact `Username` to the address book.
+- `>>> set phone Username 0935841245` --- add phone[^1] to contact `Username` in address book.
+  If contact was absent
+- `>>> set birthday Username 12.12.1978` --- add birthday[^1] to contact `Username` in address book.
+- `>>> set email my_name@gmail.com` --- add email[^1] to contact `Username` in address book.
 - `>>> upcoming birthdays 5`
 - `>>> show contact Username`
 - `>>> search contact SearchQuery` --- where `SearchQuery` some word
@@ -69,6 +72,8 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> remove phone Username 1` --- remove user phone by index `1`.
 - `>>> remove email Username 2` --- remove user email by index `2`.
 - `>>>edit note 1 New text`: Edit note by `1`.
+
+[^1]: If the contact is missing, it will be added automatically
 
 ## Using - Manage notes
 
