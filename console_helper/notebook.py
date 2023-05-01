@@ -7,35 +7,52 @@ Note = namedtuple("Note", ["tags", "date", "text"])
 
 class Notebook(UserList):
     def update(self, notes):
+        """Оновлює нотатки. Треба для читання з файлу"""
         self.data.clear()
         self.data.extend(notes)
 
     def add_note(self, tags, note_text):
+        """Додає нотатку з одним тегом"""
         note = Note(tags=tags, date=datetime.now(), text=note_text)
         self.data.append(note)
 
     def remove_note(self, index):
+        """Видапляє нотатку"""
         self.data.pop(index)
 
-    def display_notes(self, tag=None):
-        if tag is None:
-            return self.data
-        else:
-            return [note for note in self.data if tag in note.tags]
+    def display_notes(self, tag=None, original_indices=False):
+        """Показывает заметки, может фильтровать по тегу, возвращает исходные индексы если original_indices=True"""
+        notes = self.data
+        if tag is not None:
+            notes = [note for note in notes if tag in note.tags]
+        if original_indices:
+            notes = [
+                (note, index) for index, note in enumerate(self.data) if note in notes
+            ]
+        return notes
 
     def find_notes(self, search_term):
-        return [note for note in self.data if search_term in note.text]
+        """Шукає нотатки за текстом"""
+        search_term = search_term.lower()
+        results = []
+        for i, note in enumerate(self.data):
+            if search_term in note.text.lower():
+                results.append((note, i))
+        return results
 
     def sort_notes_by_tag(self):
+        """Шукає нотатку за тегом"""
         return sorted(self.data, key=lambda note: tuple(note.tags))
 
     def add_tag(self, index, tag):
+        """Додає текст до нотатки"""
         note = self.data[index]
         note_tags = list(note.tags)
         note_tags.append(tag)
         self.data[index] = note._replace(tags=tuple(note_tags))
 
-    def edit_note(self, index, new_text):
+    def change_note(self, index, new_text):
+        """Замінює текст нотатки"""
         note = self.data[index]
         self.data[index] = note._replace(text=new_text)
 
