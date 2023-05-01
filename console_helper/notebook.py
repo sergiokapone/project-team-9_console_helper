@@ -1,62 +1,70 @@
-import re
-import pathlib
-from collections import UserDict
-import pickle
-import csv
-from datetime import datetime, timedelta
+from collections import namedtuple, UserList
+from datetime import datetime
+from prettytable import PrettyTable
 
-class Note(UserDict):
-    def __init__(self):
-        super().__init__()
-        self.counter = 0
+Note = namedtuple("Note", ["tags", "date", "text"])
 
-    def set_counter(self):
-        max_id = 0
-        for tag, notes in self.data.items():
-            for note in notes:
-                if note["id"] > max_id:
-                    max_id = note["id"]
-        self.counter = max_id
 
-    def add(self, tag, note_text):
-        max_id = max(
-            (note.get("id", 0) for notes in self.data.values() for note in notes),
-            default=-1,
-        )
+class Notebook(UserList):
+    def update(self, notes):
+        self.data.clear()
+        self.data.extend(notes)
 
-        note_id = max_id + 1
-        note = {"id": note_id, "text": note_text, "created": datetime.now()}
-        self.data.setdefault(tag, []).append(note)
-        self.counter = note_id
+    def add_note(self, tags, note_text):
+        note = Note(tags=tags, date=datetime.now(), text=note_text)
+        self.data.append(note)
 
-    def remove_note(self, note_id):
-        for tag, notes in self.data.items():
-            for i, note in enumerate(notes):
-                if note["id"] == int(note_id):
-                    del self.data[tag][i]
-                    break
-        for tag, notes in self.data.items():
-            for i, note in enumerate(notes):
-                if note["id"] > int(note_id):
-                    self.data[tag][i]["id"] -= 1
+    def remove_note(self, index):
+        self.data.pop(index)
 
-    def display(self, tag=None):
-        return self
+    def display_notes(self, tag=None):
+        if tag is None:
+            return self.data
+        else:
+            return [note for note in self.data if tag in note.tags]
 
     def find_notes(self, search_term):
-        result = {}
-        for tag, notes in self.data.items():
-            matching_notes = [
-                note
-                for note in notes
-                if search_term.lower() in str(note["text"]).lower()
-            ]
-            if matching_notes:
-                result[tag] = matching_notes
-        return result
+        return [note for note in self.data if search_term in note.text]
 
     def sort_notes_by_tag(self):
-        sorted_notes = {}
-        for tag in sorted(self.data.keys()):
-            sorted_notes[tag] = self.data[tag]
-        return sorted_notes
+        return sorted(self.data, key=lambda note: tuple(note.tags))
+
+    def add_tag(self, index, tag):
+        note = self.data[index]
+        note_tags = list(note.tags)
+        note_tags.append(tag)
+        self.data[index] = note._replace(tags=tuple(note_tags))
+
+    def edit_note(self, index, new_text):
+        note = self.data[index]
+        self.data[index] = note._replace(text=new_text)
+
+    def __len__(self):
+        return len(self.data)
+
+
+# отладка
+if __name__ == "__main__":
+    notebook = Notebook()
+    notebook.add_note(["Rec"], "Mu fully featured class")
+    notebook.add_note(["Rec"], "My new note")
+    notebook.add_note(["Alarm"], "My new2 note")
+
+    def display_notes_table(notes):
+        table = PrettyTable()
+        table.field_names = ["Index", "Tags", "Cration Date", "Text"]
+        for i, note in enumerate(notes):
+            date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
+            table.add_row([i, ", ".join(note.tags), date_str, note.text])
+        return table
+
+    notebook.add_tag(0, "Curl")
+    notebook.sort_notes_by_tag()
+    b = display_notes_table(notebook.display_notes())
+    print(b)
+
+    notebook.remove_note(0)
+    notebook.edit_note(0, "Wow!")
+
+    a = display_notes_table(notebook.display_notes())
+    print(a)
