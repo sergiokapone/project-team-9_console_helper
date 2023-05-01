@@ -1,4 +1,4 @@
 .venv/
 build/
 helper.egg-info/
-__pycache__/
+console_helper/__pycache__/
