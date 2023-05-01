@@ -1,6 +1,4 @@
 import shutil
-import sys
-import random
 from pathlib import Path
 from .file_copies_deleter import copies_deleter
 
@@ -52,7 +50,9 @@ def create_folders(root):
         Path(root).joinpath(folder).mkdir(exist_ok=True)
 
 
-def sort_dir(path, level=0, known_exts=set(), unknown_exts=set(), categories=set()):
+def organize_files(
+    path, level=0, known_exts=set(), unknown_exts=set(), categories=set()
+):
     """Функція фасує файли по відповідним папкам."""
 
     the_path = Path(path)
@@ -62,7 +62,7 @@ def sort_dir(path, level=0, known_exts=set(), unknown_exts=set(), categories=set
 
     for item in the_path.iterdir():
         if item.is_dir() and item.name not in EXT_FOLDER.values():
-            sort_dir(item.resolve(), level + 1)
+            organize_files(item.resolve(), level + 1)
         else:
             category = get_file_cathegory(item.name)
             if category:
@@ -72,20 +72,12 @@ def sort_dir(path, level=0, known_exts=set(), unknown_exts=set(), categories=set
                 item = normalise_file_name(item)
                 # --------------------------
                 root_name = Path(root_path).joinpath(category, item.name)
-                file_exist = root_name.exists()
-                try:
-                    if file_exist:
-                        index = rand_string()
-                        new_name = item.stem + index + item.suffix
-                        root_name.rename(Path(root_path).joinpath(category, new_name))
-                    shutil.move(item, Path(root_path).joinpath(category))
-                    if category == "archives":
-                        unpack(
-                            root_name,
-                            Path(root_path).joinpath(category, item.stem),
-                        )
-                except shutil.Error as er:
-                    print(er)
+                shutil.move(item, Path(root_path).joinpath(category))
+                if category == "archives":
+                    unpack(
+                        root_name,
+                        Path(root_path).joinpath(category, item.stem),
+                    )
             else:
                 if item.is_file():
                     unknown_exts.add(item.suffix)
@@ -118,7 +110,6 @@ def remove_empty(path):
 
 
 def known_exts(root):
-
     exts = set()
     for item in Path(root).iterdir():
         if item.is_dir():
@@ -128,66 +119,38 @@ def known_exts(root):
     return exts
 
 
-def rand_string():
-    return "_" + "".join(
-        (
-            random.choice("012345678abcdxyzpqrABCDEFGHJKLMNOPQRSTUVWXYZ")
-            for i in range(5)
-        )
-    )
-
-
 """ ======================== Основна програма =============================="""
 
 
-def main(root):
+def sort_folder(root):
+    path = Path(root)
+    if not path.is_dir():
+        return f"{Y}Warning!{N} The {root} is not a valid path!"
+
     agreement = input(
         f"{Y}WARNING! {G}Are you sure you want to sort the files in CATALOG {Y + root}{N}? (y/n): "
     )
 
-    if agreement in ("y", "Y", "yes", "Yes", "YES"):
-        create_folders(root)
-        unknown_exts = sort_dir(root)
-        remove_empty(root)
-
-        print(f"{G}Known extensions:{N}")
-
-        for ext in known_exts(root):
-            print(ext)
-
-        if len(unknown_exts) != 0:
-
-            print(f"{R}Unknown extensions:{N}")
-
-            for ext in unknown_exts:
-                print(ext)
-
-        print(f"{G}Files in folders:{N}")
-
-        for item in Path(root).iterdir():
-            if item.is_dir():
-                num_of_files = len(
-                    [
-                        file
-                        for file in Path(root).joinpath(item).iterdir()
-                        if file.is_file()
-                    ]
-                )
-                print(
-                    f"{G}Folder {Y}{item.name}{G} contain {Y}{num_of_files}{G} file(s){N}"
-                )
-    else:
-        print(f"{G}Operation approved!{N}")
+    if agreement not in ("y", "Y", "yes", "Yes", "YES"):
+        return f"{G}Operation approved!{N}"
 
     copies_deleter(root)
+    create_folders(root)
+    unknown_exts = organize_files(root)
+    remove_empty(root)
 
+    ke = ", ".join([ext for ext in known_exts(root)])
+    print(f"{G}Known extensions:{N} {ke}")
 
-def run():
-    try:
-        main(sys.argv[1])
-    except IndexError:
-        print(f"{G}usage: {Path(__file__).name} indir{N}")
+    if unknown_exts:
+        ue = ", ".join([ext for ext in unknown_exts])
+        print(f"{R}Unknown extensions:{N} {ue}")
 
+    for item in path.iterdir():
+        if item.is_dir():
+            num_of_files = sum(1 for file in item.iterdir() if file.is_file())
+            print(
+                f"{G}Folder {Y}{item.name}{G} contain {Y}{num_of_files}{G} file(s){N}"
+            )
 
-if __name__ == "__main__":
-    run()
+    return f"{G}Folder {Y}{root}{G} sorted!{N}"

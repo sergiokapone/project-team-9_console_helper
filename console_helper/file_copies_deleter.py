@@ -62,10 +62,10 @@ def delete_files(hash_dictionary):
     total_deleted = 0
     for path_dict in hash_dictionary.values():
         for file_path in path_dict[1:]:
-            total_deleted += round(getsize(file_path) / 1024 / 1024, 2)  # size in MB
+            total_deleted += getsize(file_path) / (1024 * 1024)  # size in MB
             os.remove(file_path)  # Deleting a file
 
-    return total_deleted
+    return round(total_deleted, 2)
 
 
 # The function deletes empty folders that may have formed after deleting copies
@@ -107,6 +107,7 @@ def copies_deleter(root):
                 print(f"{R}You entered a non-existent command. Please try again.{N}\n")
 
         delete_empty_folders(path_to_dir)
+    return "Done"
 
 
 if __name__ == "__main__":

@@ -56,8 +56,7 @@ with names
 - `remove note`: Removes a note from the list.
 - `save notes`: Saves the notes to a file.
 - `load notes`: Loads the notes from a file.
-- `sort folder`: Sorts the notes in ascending or descending order by date or title.
-- `edit note`: Edit note by index.
+- `change note`: Edit note by index.
 
 ## Usage Examples
 
