@@ -275,7 +275,7 @@ def show_contacts(*args):
     number_of_entries = (
         int(args[0])
         if args[0] is not None and isinstance(args[0], str) and args[0].isdigit()
-        else 100
+        else 20
     )
 
     current_contact_num = 1  # Начальный номер контакта
