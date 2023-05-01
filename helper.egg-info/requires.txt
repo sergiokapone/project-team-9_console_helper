@@ -1,0 +1,4 @@
+prettytable
+Pygments
+transliterate
+prompt-toolkit==3.0
