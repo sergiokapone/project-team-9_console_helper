@@ -6,7 +6,7 @@ import os.path
 from pathlib import Path
 from difflib import get_close_matches
 
-from prettytable import PrettyTable
+from prettytable import PrettyTable, SINGLE_BORDER
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
@@ -233,6 +233,7 @@ def pretty_print(contacts):
     table = PrettyTable()
     table.field_names = ["#", "Name", "Birthday", "Phones", "Emails", "Address"]
     table.align["Emails"] = "l"
+    table.set_style(SINGLE_BORDER)
     for i, record in enumerate(contacts):
         birthday = record.birthday[0].value if record.birthday else "-"
         address = record.address[0] if record.address else "-"
@@ -322,6 +323,7 @@ def display_notes_table(notes):
     table = PrettyTable()
     table.field_names = ["Index", "Tags", "Cration Date", "Text"]
     table.max_width["Text"] = 79
+    table.set_style(SINGLE_BORDER)
     for i, note in enumerate(notes):
         date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
         table.add_row(
