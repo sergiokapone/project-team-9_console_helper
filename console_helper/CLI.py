@@ -317,16 +317,17 @@ def add_tag(*args):
     return f"I addes tag {args[1]} to note {args[0]}"
 
 
-def display_notes_table(notes):
+def display_notes_table(notes, offset=0):
     table = PrettyTable()
     table.field_names = ["Index", "Tags", "Cration Date", "Text"]
     table.max_width["Text"] = 79
     table.set_style(SINGLE_BORDER)
     for i, note in enumerate(notes):
         date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
+        index = f"{G}{i+offset}{N}"
         table.add_row(
             [
-                f"{G}{i}{N}",
+                index,
                 ", ".join(note.tags),
                 f"{Y}{date_str}{N}",
                 f"{B}{note.text}{N}",
@@ -339,9 +340,10 @@ def display_notes_table(notes):
 @input_error
 def show_notes(*args):
     if args[0]:
-        return display_notes_table(notebook.display_notes(tag=args[0]))
+        notes = notebook.display_notes(tag=args[0])
     else:
-        return display_notes_table(notebook.display_notes())
+        notes = notebook.display_notes()
+    return display_notes_table(notes)
 
 
 # @input_error
