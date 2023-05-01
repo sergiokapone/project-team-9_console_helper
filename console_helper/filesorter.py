@@ -2,7 +2,7 @@ import shutil
 import sys
 import random
 from pathlib import Path
-
+from .file_copies_deleter import copies_deleter
 
 from .normaliser import normalise
 
@@ -179,6 +179,8 @@ def main(root):
                 print(f"Folder {item.name} contain {num_of_files} file(s)")
     else:
         print("Operation approved!")
+
+    copies_deleter(root)
 
 
 def run():

@@ -6,16 +6,14 @@ from os.path import join, getsize
 
 
 # Getting an absolut path to directory with files
-def get_path_dir():
-    abs_path = input("Please, enter the absolute path to directory: ")
-    if len(abs_path) == 0:
-        print("Directory is not specified. Try again.\n")
-        main()
-    elif os.path.isdir(abs_path):
-        return abs_path
-    else:
-        print("Entered path doesn't exist. Try again.\n")
-        main()
+# def get_path_dir():
+#     abs_path = input("Please, enter the absolute path to directory: ")
+#     if len(abs_path) == 0:
+#         print("Directory is not specified. Try again.\n")
+#     elif os.path.isdir(abs_path):
+#         return abs_path
+#     else:
+#         print("Entered path doesn't exist. Try again.\n")
 
 
 def count_files(abs_path, file_format=""):
@@ -79,8 +77,8 @@ def delete_empty_folders(path):
                 os.rmdir(full_path)  # remove empty folder
 
 
-def main():
-    path_to_dir = get_path_dir()
+def copies_deleter(root):
+    path_to_dir = root
     count_files(path_to_dir)
 
     print("Looking for copies...")
@@ -89,23 +87,24 @@ def main():
     copy_count, hash_dict = count_copies(path_to_dir)
     print(f"Copies found: {copy_count}")
 
-    while True:
-        want_delete = input("Do you want to delete the detected copies? y/n?\t")
+    if copy_count != 0:
+        while True:
+            want_delete = input("Do you want to delete the detected copies (y/n)? ")
 
-        if want_delete in ("yes", "YES", "Y", "y"):
-            total_deleted = delete_files(hash_dict)
-            print(f"Deleted {total_deleted} МВ")
-            time.sleep(3)
-            break
-        elif want_delete in ("n", "N", "no", "NO"):
-            print("Ok. Good bye!")
-            time.sleep(2)
-            break
-        else:
-            print("You entered a non-existent command. Please try again.\n")
+            if want_delete in ("yes", "YES", "Y", "y"):
+                total_deleted = delete_files(hash_dict)
+                print(f"Deleted {total_deleted} МВ")
+                time.sleep(3)
+                break
+            elif want_delete in ("n", "N", "no", "NO"):
+                print("Ok. Good bye!")
+                time.sleep(2)
+                break
+            else:
+                print("You entered a non-existent command. Please try again.\n")
 
-    delete_empty_folders(path_to_dir)
+        delete_empty_folders(path_to_dir)
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    copies_deleter("d:\\Different\\Garbage\\")
