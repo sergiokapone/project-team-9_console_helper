@@ -3,6 +3,7 @@
 import re
 import os
 import os.path
+from pathlib import Path
 from difflib import get_close_matches
 
 from prettytable import PrettyTable
@@ -11,15 +12,9 @@ from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import TerminalFormatter
 
-from .addressbook import (
-    Name,
-    Phone,
-    Email,
-    Address,
-    Birthday,
-    Record,
-    AddressBook,
-)
+from .addressbook import AddressBook
+
+from .notebook import Notebook
 
 from .serializer import PickleStorage
 
@@ -34,52 +29,16 @@ R = "\033[1;31m"  # Red
 N = "\033[0m"  # Reset
 Y = "\033[0;33;40m"  # Yellow
 
-# ============================ Tables decoration =============================#
-
-
-def build_contacts_table(records):
-    table = PrettyTable()
-    table.field_names = ["Name", "Phone", "Birthday", "Email", "Address"]
-    for record in records:
-        table.add_row(
-            [
-                G + record.data["name"].value + N,
-                B + record.show_data("phone") + N,
-                Y + record.show_data("birthday") + N,
-                P + record.show_data("email") + N,
-                Y + record.show_data("address") + N,
-            ]
-        )
-    return f"{N}{table}"
-
-
-# def build_contacts_table(records):
-#     table = PrettyTable()
-#     table.field_names = ["Name", "Phone", "Birthday", "Email", "Address"]
-#     for record in records:
-#         table.add_row(
-#             [
-#                 record.data["name"].value,
-#                 record.show_data("phone"),
-#                 record.show_data("birthday"),
-#                 record.show_data("email"),
-#                 record.show_data("address"),
-#             ]
-#         )
-#     return f"\033[0m{table}"
-
-
-# def build_table_notes(data):
-#     table = PrettyTable()
-#     table.field_names = ["ID", "Tag", "Created", "Note"]
-#     table.align["Note"] = "l"
-#     for tag, notes in data.items():
-#         for note in notes:
-#             idx = note["id"]
-#             created = note["created"].strftime("%Y-%m-%d %H:%M:%S")
-#             text = note["text"]
-#             table.add_row([idx, tag, created, text])
-#     return table
+# style = Style.from_dict(
+#     {
+#         "green": "#00ff00",
+#         "blue": "#0080ff",
+#         "pink": "#ff69b4",
+#         "red": "#ff0000",
+#         "yellow": "#ffff00",
+#         "reset": "",
+#     }
+# )
 
 
 # ================================= Decorator ================================#
@@ -97,6 +56,8 @@ def input_error(func):
             return f"{R + str(error) + N}"
         except FileNotFoundError:
             return R + "File not found" + N
+        except IndexError:
+            return R + "No such index" + N
 
     return wrapper
 
@@ -127,23 +88,25 @@ def undefined(*args):
 
 @input_error
 def save(*args):
-    PickleStorage.export_file(contacts, args[0])
+    home_path = Path.home()
+    file_path = home_path / args[0]
+    PickleStorage.export_file(contacts, file_path)
     return f"File {args[0]} saved"
 
 
 @input_error
-def save_notes(*args):
-    ...
-
-
-@input_error
 def load(*args):
-    if PickleStorage.is_file_exist(args[0]):
+    home_path = Path.home()
+    file_path = home_path / args[0]
+    if PickleStorage.is_file_exist(file_path):
         contacts.clear()
-        contacts.update(PickleStorage.import_file(args[0]))
+        contacts.update(PickleStorage.import_file(file_path))
         return f"File {args[0]} loaded"
     else:
         raise FileNotFoundError
+
+
+# ========================= Робота з контактами ============================= #
 
 
 @input_error
@@ -153,32 +116,23 @@ def add_contact(*args):
     if not args[0]:
         raise KeyError("Give me a name, please")
 
-    name = Name(args[0])
-
-    if name.value in contacts.data:
-        record = contacts.data[name.value]
-    else:
-        record = Record(name)
-        contacts.add_record(record)
+    contacts.add_record(args[0])
 
     return f"I added a contact {args[0]} to Addressbook"
 
 
 @input_error
-def remove(*args):
+def remove_contact(*args):
     """Функція-handler видаляє запис з книги."""
 
     if not args[0]:
         raise KeyError("Give me a name, please")
 
-    name = Name(args[0])
+    result = contacts.remove_record(args[0])
 
-    if name.value in contacts:
-        del contacts[name.value]
-    else:
-        raise KeyError(f"Name {args[0]} does not exist in addressbook.")
-
-    return f"Contact {name.value} was removed"
+    if result:
+        return f"Contact {args[0]} was removed"
+    return f"{R}Contact {args[0]} not in address book{N}"
 
 
 @input_error
@@ -190,14 +144,7 @@ def set_phone(*args):
     if not args[1]:
         raise ValueError("Give me a phone, please")
 
-    name, phone = Name(args[0]), Phone(args[1])
-
-    if name.value in contacts.data:
-        record = contacts.data[name.value]
-    else:
-        record = Record(name)
-        contacts.add_record(record)
-    record.add_data("phone", phone.value)
+    contacts.add_phone(args[0], args[1])
 
     return f"I added a phone {args[1]} to contact {args[0]}"
 
@@ -209,11 +156,7 @@ def remove_phone(*args):
     if not args[0]:
         raise KeyError("Give me a name, please")
 
-    name = Name(args[0])
-
-    if name.value in contacts.data:
-        record = contacts.data[name.value]
-        record.remove_data("phone")
+    contacts.delete_phone_by_index(args[0], int(args[1]) - 1)
 
     return f"I removed a phone of contact {args[0]}"
 
@@ -228,52 +171,30 @@ def set_email(*args):
     if not args[1]:
         raise ValueError("Give me a email, please")
 
-    name, email = Name(args[0]), Email(args[1])
-
-    if name.value in contacts.data:
-        record = contacts.data[name.value]
-    else:
-        record = Record(name)
-        contacts.add_record(record)
-    record.add_data("email", email.value)
+    contacts.add_email(args[0], args[1])
 
     return f"I added a email {args[1]} to contact {args[0]}"
 
 
 @input_error
 def remove_email(*args):
-    """Видаляє email в контакті по імені."""
+    """Видаляє email номер в контакт по імені."""
 
     if not args[0]:
         raise KeyError("Give me a name, please")
 
-    name = Name(args[0])
-
-    if name.value in contacts.data:
-        record = contacts.data[name.value]
-        record.remove_data("email")
+    contacts.delete_email_by_index(args[0], int(args[1]) - 1)
 
     return f"I removed a email of contact {args[0]}"
 
 
 @input_error
 def set_address(*args):
-    """Добавляет email номер в контакт по имени."""
-
+    """Додає адресу в контакт по імені."""
     if not args[0]:
         raise KeyError("Give me a name, please")
 
-    if not args[1]:
-        raise ValueError("Give me a address, please")
-
-    name, address = Name(args[0]), Address(args[1])
-
-    if name.value in contacts.data:
-        record = contacts.data[name.value]
-    else:
-        record = Record(name)
-        contacts.add_record(record)
-    record.add_data("address", address.value)
+    contacts.add_address(args[0], args[1])
 
     return f"I added a address {args[1]} to contact {args[0]}"
 
@@ -285,11 +206,7 @@ def remove_address(*args):
     if not args[0]:
         raise KeyError("Give me a name, please")
 
-    name = Name(args[0])
-
-    if name.value in contacts.data:
-        record = contacts.data[name.value]
-        record.remove_data("address")
+    contacts.remove_address(args[0])
 
     return f"I removed a address of contact {args[0]}"
 
@@ -303,14 +220,7 @@ def set_birthday(*args):
     if not args[1]:
         raise ValueError("Give me a date, please")
 
-    name, birthday = Name(args[0]), Birthday(args[1])
-
-    if name.value in contacts.data:
-        record = contacts.data[name.value]
-    else:
-        record = Record(name)
-        contacts.add_record(record)
-    record.add_data("birthday", birthday.value)
+    contacts.add_birthday(args[0], args[1])
 
     return f"I added a birthday {args[1]} to contact {args[0]}"
 
@@ -321,44 +231,64 @@ def upcoming_birthdays(*args):
         raise TypeError("Set days you interested")
     days = int(args[0])
     result = contacts.upcoming_birthdays(days)
-    return build_contacts_table(result)
+    return f"{N}{pretty_print(result)}{N}"
 
 
 @input_error
-def search(*args):
+def search_contact(*args):
 
     if not args[0]:
         raise KeyError("Give me a some string, please")
 
-    results = contacts.search(args[0])
+    results = contacts.find_records(args[0])
 
     if results:
-        return f"{N + build_contacts_table(results)}"
+        return f"{N}{pretty_print(results)}{N}"
     return "By your request found nothing"
 
 
-# @input_error
-# def export_to_csv(*args):
-#     if not args[0]:
-#         raise TypeError("Set file name, please")
-#     contacts.export_file(args[0])
-#     return f"File {args[0]} exported to csv"
+def pretty_print(contacts):
+    table = PrettyTable()
+    table.field_names = ["#", "Name", "Birthday", "Phones", "Emails", "Address"]
+    table.align["Emails"] = "l"
+    for i, record in enumerate(contacts):
+        birthday = record.birthday[0].value if record.birthday else "-"
+        address = record.address[0] if record.address else "-"
+        phones_str = _get_phones_str(record.phones)
+        emails_str = _get_emails_str(record.emails)
+        table.add_row(
+            [
+                i + 1,
+                f"{G}{record.name}{N}",
+                f"{B}{birthday}{N}",
+                phones_str,
+                emails_str,
+                f"{Y}{address}{N}",
+            ],
+            divider=True,
+        )
+    return table
 
 
-# @input_error
-# def import_from_csv(*args):
-#     contacts.import_file(args[0])
-#     return f"File {args[0]} imported from csv"
+def _get_phones_str(phones):
+    if not phones:
+        return "-"
+    phones_str = ""
+    for i, phone in enumerate(phones):
+        phones_str += f"{i+1}. {phone.value}\n"
+    return phones_str[:-1]
+
+
+def _get_emails_str(emails):
+    if not emails:
+        return "-"
+    emails_str = ""
+    for i, email in enumerate(emails):
+        emails_str += f"{i+1}. {P}{email.value}{N}\n"
+    return emails_str[:-1]
 
 
 @input_error
-def show_contact(*args):
-    if not args[0]:
-        raise TypeError("What contact are you search for?")
-    record = contacts.find_records(args[0])
-    return build_contacts_table(record)
-
-
 def show_contacts(*args):
     number_of_entries = (
         int(args[0])
@@ -366,63 +296,123 @@ def show_contacts(*args):
         else 100
     )
 
+    current_contact_num = 1  # Начальный номер контакта
     for tab in contacts.iterator(number_of_entries):
         if tab == "continue":
             input(G + "Press <Enter> to continue..." + N)
         else:
-            print(build_contacts_table(tab.values()))
-
+            table = pretty_print(tab)
+            # table.align["Emails"] = "l"
+            # Обновляем номера контактов в колонке #
+            for i, row in enumerate(table._rows):
+                row[0] = current_contact_num + i
+            print(table)
+            # Обновляем текущий номер контакта
+            current_contact_num += len(tab)
     return f"Address book contain {len(contacts)} contact(s)"
 
 
-# record = contacts.show_records()
-# return build_contacts_table(record)
+# ============================= Команди для нотаток ========================= #
 
 
+@input_error
+def add_note(*args):
+    notebook.add_note([args[0]], args[1])
+    return "I added note"
+
+
+@input_error
+def remove_note(*args):
+    notebook.remove_note(int(args[0]))
+    return "I removed note"
+
+
+@input_error
+def add_tag(*args):
+
+    if not args[0].isdigit():
+        raise TypeError("Index must be a number")
+    notebook.add_tag(int(args[0]), args[1])
+    return f"I addes tag {args[1]} to note {args[0]}"
+
+
+def display_notes_table(notes):
+    table = PrettyTable()
+    table.field_names = ["Index", "Tags", "Cration Date", "Text"]
+    table.max_width["Text"] = 79
+    for i, note in enumerate(notes):
+        date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
+        table.add_row(
+            [f"{G}{i}{N}", ", ".join(note.tags), f"{Y}{date_str}{N}", note.text],
+            divider=True,
+        )
+    return f"{N + str(table)}"
+
+
+@input_error
+def show_notes(*args):
+    if args[0]:
+        return display_notes_table(notebook.display_notes(tag=args[0]))
+    else:
+        return display_notes_table(notebook.display_notes())
+
+
+# @input_error
+def sort_notes(*args):
+    return display_notes_table(notebook.sort_notes_by_tag())
+
+
+@input_error
+def save_notes(*args):
+    home_path = Path.home()
+    file_path = home_path / args[0]
+    PickleStorage.export_file(notebook, file_path)
+    return f"File {args[0]} saved"
+
+
+@input_error
+def edit_note(*args):
+
+    if not args[0]:
+        raise KeyError("Please, pu unteger index")
+
+    notebook.edit_note(int(args[0]), args[1])
+
+    return f"I edited note {args[0]}"
+
+
+@input_error
+def load_notes(*args):
+    home_path = Path.home()
+    file_path = home_path / args[0]
+    if PickleStorage.is_file_exist(file_path):
+        notebook.clear()
+        notebook.update(PickleStorage.import_file(file_path))
+        return f"File {args[0]} loaded"
+    else:
+        raise FileNotFoundError
+
+
+@input_error
+def search_notes(*args):
+    return f"{G}{display_notes_table(notebook.find_notes(args[0]))}{N}"
+
+
+# =========================================================================== #
 def help_commands(*args):
     """Функція показує перелік всіх команд."""
 
-    file_path = "readme.md"
-    if not os.path.exists(file_path):
-        return R + "File {file_path} not found." + N
+    PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+    README_PATH = os.path.join(PACKAGE_ROOT, "../README.md")
 
-    with open(file_path, "r") as file:
+    if not os.path.exists(README_PATH):
+        return R + f"File {README_PATH} not found." + N
+
+    with open(README_PATH, "r") as file:
         code = file.read()
         lexer = get_lexer_by_name("markdown")
         formatted_code = highlight(code, lexer, TerminalFormatter())
         return formatted_code
-
-    # table = PrettyTable()
-    # table.field_names = ["Command"]
-    # table.min_width.update({"Command": 20})
-
-    # for command in COMMANDS:
-    #     table.add_row([command])
-
-    # return f"\nPlease type followed commands:\n\033[0m{table}"
-
-
-# def add_note(*args):
-#     notes.add(args[0], args[1])
-#     return "I had added note."
-
-
-# def show_notes(*args):
-#     return f"\033[0m{build_table_notes(notes.display())}\033[0m"
-
-
-# def search_notes(*args):
-#     return f"\033[0m{build_table_notes(notes.find_notes(args[0]))}\033[0m"
-
-
-# def remove_note(*args):
-#     notes.remove_note(args[0])
-#     return "Note deleted"
-
-
-def show_contactsupcoming_birthdays(*args):
-    results = contacts.upcoming_birthdays(args[0])
-    return f"{N + build_contacts_table(results)}"
 
 
 @input_error
@@ -434,8 +424,10 @@ def sort_folder(*args):
 # =============================== handler loader =============================#
 
 COMMANDS = {
+    # --- Hello commands ---
     "help": help_commands,
     "hello": hello,
+    # --- Manage contacts ---
     "add contact": add_contact,
     "set phone": set_phone,
     "remove phone": remove_phone,
@@ -446,26 +438,34 @@ COMMANDS = {
     "set birthday": set_birthday,
     "upcoming birthdays": upcoming_birthdays,
     "show contacts": show_contacts,
-    "show contact": show_contact,
-    "remove contact": remove,
+    "search contact": search_contact,
+    "show contact": search_contact,
+    "remove contact": remove_contact,
+    "save": save,
+    "load": load,
+    # --- Manage notes ---
+    "add note": add_note,
+    "add tag": add_tag,
+    "remove note": remove_note,
+    "show notes": show_notes,
+    "sort notes": sort_notes,
+    "save notes": save_notes,
+    "load notes": load_notes,
+    "search notes": search_notes,
+    "edit note": edit_note,
+    # --- Sorting folder commnad ---
+    "sort folder": sort_folder,
+    # --- Googd bye commnad ---
     "good bye": good_bye,
     "close": good_bye,
     "exit": good_bye,
-    "save": save,
-    "load": load,
-    "search contact": show_contact,
-    # "export": export_to_csv,
-    # "import": import_from_csv,
-    # "add note": add_note,
-    # "show notes": show_notes,
-    # "search notes": search_notes,
-    # "remove note": remove_note,
-    "sort folder": sort_folder,
 }
 
 command_pattern = "|".join(COMMANDS.keys())
 pattern = re.compile(
-    r"\b(\.|" + command_pattern + r")\b(?:\s+([a-zA-Z0-9\.\:\\_\-]+))?(?:\s+(.+))?",
+    r"\b(\.|"
+    + command_pattern
+    + r")\b(?:\s+([а-яА-Яa-zA-Z0-9\.\:\\_\-]+))?(?:\s+(.+))?",
     re.IGNORECASE,
 )
 
@@ -506,9 +506,10 @@ def parse_command(command):
 # ================================ main function ============================ #
 
 contacts = AddressBook()  # Global variable for storing contacts
-# notes = Note()  # Global variable for storing notes
+notebook = Notebook()  # Global variable for storing notes
 
-NOTES_FILE = "notes"
+
+NOTES_FILE = "notes.bin"
 CONTACT_FILE = "contacts.bin"
 
 
@@ -518,19 +519,20 @@ def main():
         f"{G}Hello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType {Y}help{G} for more information.{N}"
     )
     load(CONTACT_FILE)
-    # load_notes(NOTES_FILE)
+    load_notes(NOTES_FILE)
     while True:
         command = wait_for_input(">>> ")
 
         if command.strip() == ".":
             save(CONTACT_FILE)
-            # save_notes(NOTES_FILE)
+            save_notes(NOTES_FILE)
             return
 
         params = parse_command(command)
         handler = get_handler(*params)
         response = handler(*params[1:])
         print(f"{G + response + N}")
+        print("\n\n")
 
         if response == "Good bye!":
             return None

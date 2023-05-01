@@ -1,6 +1,6 @@
 import re
 from datetime import datetime, timedelta
-from collections import UserDict
+from collections import namedtuple, UserList
 
 
 class Field:
@@ -20,14 +20,6 @@ class Field:
 
     # def __str__(self):
     #     return self.value
-
-
-class Name(Field):
-    """Клас --- обов'язкове поле з ім'ям."""
-
-    @Field.value.setter
-    def value(self, value):
-        self.__value = value
 
 
 class Phone(Field):
@@ -65,127 +57,100 @@ class Email(Field):
         self.__value = value
 
 
-class Address(Field):
-    """Клас --- необов'язкове поле з адресою"""
-
-    @Field.value.setter
-    def value(self, value):
-        self.__value = value
+Record = namedtuple("Record", ["name", "birthday", "phones", "emails", "address"])
 
 
-class DataFactory:
-    def create_data(self, value):
-        pass
+class AddressBook(UserList):
+    def update(self, records):
+        self.data.clear()
+        self.data.extend(records)
 
+    def add_record(self, name, birthday=None, phones=None, emails=None, address=None):
+        # Проверяем, есть ли уже контакт с таким именем
+        for record in self.data:
+            if record.name == name:
+                # print(f"Contact with {name} already exist!")
+                return
 
-class NameFactory:
-    def create_name(self, name):
-        return Name(name)
+        # Если контакта с таким именем еще нет, то создаем новый
+        birthday = [Birthday(birthday) for birthday in birthday] if birthday else []
+        phones = [Phone(phone) for phone in phones] if phones else []
+        emails = [Email(email) for email in emails] if emails else []
+        address = [address] if address else []
+        record = Record(
+            name=name,
+            birthday=birthday,
+            phones=phones,
+            emails=emails,
+            address=address,
+        )
+        self.data.append(record)
 
+    def add_phone(self, name, phone):
+        for record in self.data:
+            if record.name == name:
+                record.phones.append(Phone(phone))
+                return
+        self.add_record(name=name, phones=[phone])
 
-class PhoneFactory(DataFactory):
-    def create_data(self, value):
-        return Phone(value)
+    def add_email(self, name, email):
+        for record in self.data:
+            if record.name == name:
+                record.emails.append(Email(email))
+                return
+        self.add_record(name=name, emails=[email])
 
-
-class BirthdayFactory(DataFactory):
-    def create_data(self, value):
-        return Birthday(value)
-
-
-class EmailFactory(DataFactory):
-    def create_data(self, value):
-        return Email(value)
-
-
-class AddressFactory(DataFactory):
-    def create_data(self, value):
-        return Address(value)
-
-
-FACTORIES = {
-    "phone": PhoneFactory(),
-    "birthday": BirthdayFactory(),
-    "email": EmailFactory(),
-    "address": AddressFactory(),
-}
-
-
-class Record(UserDict):
-    def __init__(self, name: Name):
-        super().__init__()
-        self.data["name"] = name
-
-    def add_data(self, data_type, data_value):
-        """Додає відповдіне поле в записі"""
-
-        factory = FACTORIES.get(data_type)
-        if factory:
-            data = factory.create_data(data_value)
-            self.data[data_type] = data
-        else:
-            raise ValueError(f"Invalid data type: {data_type}")
-
-    # def show_data(self, data_type):
-    #     data_value = self.data.get(data_type)
-    #     return data_value.value if data_value else "-"
-
-    def remove_data(self, data_type):
-        """Видаляє відповдіне поле в запис"""
-        if data_type in self.data:
-            del self.data[data_type]
-        else:
-            raise ValueError(f"Invalid data type: {data_type}")
-
-    def update_data(self, data_type, data_value):
-        """Оновлює відповдіне поле в записі"""
-        factory = FACTORIES.get(data_type)
-        if factory:
-            data = factory.create_data(data_value)
-            self.data[data_type] = data
-        else:
-            raise ValueError(f"Invalid data type: {data_type}")
-
-    def __str__(self):
-        return ", ".join([item.value for item in self.data.values()])
-
-
-class AddressBook(UserDict):
-    def add_record(self, record: Record):
-        name = record.data["name"].value
-        if name in self.data:
-            existing_record = self.data[name]
-            for data_type, data_value in record.data.items():
-                if data_type != "name":
-                    existing_record.add_data(data_type, data_value.value)
-        else:
-            self.data[name] = record
+    def add_address(self, name, address):
+        for record in self.data:
+            if record.name == name:
+                record.address.clear()
+                record.address.append(address)
+                return
+        self.add_record(name=name, address=address)
 
     def remove_record(self, name):
-        if name in self.data:
-            del self.data[name]
+        for record in self.data:
+            if record.name == name:
+                self.data.remove(record)
+                return True
+        return False
 
-    def find_records(self, search_term):
-        return [
-            record
-            for record in self.data.values()
-            if search_term.lower() in str(record).lower()
-        ]
+    def remove_address(self, name):
+        for record in self.data:
+            if record.name == name:
+                record.address.clear()
+                return
+        return f"Contact with name {name} not found"
 
-    def show_records(self):
-        return [record for record in self.data.values()]
+    def add_birthday(self, name, birthday):
+        for record in self.data:
+            if record.name == name:
+                record.birthday.clear()
+                record.birthday.append(Birthday(birthday))
+                return
+        self.add_record(name=name, birthday=[birthday])
 
-    def __str__(self):
-        return "\n\n".join([str(record) for record in self.data.values()])
+    def delete_phone_by_index(self, name, phone_index):
+        for record in self.data:
+            if record.name == name:
+                del record.phones[phone_index]
+                return True
+
+    def delete_email_by_index(self, name, email_index):
+        for record in self.data:
+            if record.name == name:
+                del record.emails[email_index]
+                return True
 
     def upcoming_birthdays(self, days):
+        """Метод виводить список контактів у яких день народження протягоь days днів"""
         today = datetime.today().date()
         upcoming = today + timedelta(days=days)
-        result = []
-        for record in self.data.values():
-            if "birthday" in record.data:
+        upcoming_bdays = AddressBook()
+        for record in self.data:
+            if record.birthday:
                 birthday = (
-                    datetime.strptime(record.data["birthday"].value, "%d.%m.%Y")
+                    datetime.strptime(record.birthday[0].value, "%d.%m.%Y")
                     .replace(year=today.year)
                     .date()
                 )
@@ -195,17 +160,54 @@ class AddressBook(UserDict):
                 else:
                     birthday = birthday.replace(year=today.year)
                 if today <= birthday <= upcoming:
-                    result.append(record)
-        return result
+                    upcoming_bdays.data.append(record)
+        return upcoming_bdays
+
+    def find_records(self, search_term):
+        found_contacts = AddressBook()
+
+        for record in self.data:
+            if (
+                search_term in record.name
+                or search_term in str(record.address)
+                or any(search_term in birthday.value for birthday in record.birthday)
+                or any(search_term in phone.value for phone in record.phones)
+                or any(search_term in email.value for email in record.emails)
+            ):
+                found_contacts.append(record)
+
+        return found_contacts
+
+    def show_contact(self):
+        return self
 
     def iterator(self, n: int = 10):
         """Метод ітерується по записам і виводить їх частинами по n-штук."""
 
-        sorted_names = sorted(self.data.keys())
-        data_items = [(name, self.data[name]) for name in sorted_names]
-
-        for i in range(0, len(data_items), n):
-            data_slice = dict(data_items[i : i + n])
+        items = sorted(self.data)
+        for i in range(0, len(items), n):
+            data_slice = items[i : i + n]
             yield data_slice
-            if i + n < len(data_items):
+            if i + n < len(items):
                 yield "continue"
+
+
+# отладка
+if __name__ == "__main__":
+    contacts = AddressBook()
+    # contacts.add_record("Sergiy")
+    # contacts.add_phone("Sergiy", "0987654321")
+    # contacts.add_phone("Sergiy", "0987654321")
+    # contacts.add_phone("Sergiy", "2323456545")
+    # contacts.add_email("Sergiy", "qw@df.df")
+    # contacts.add_email("Sergiy", "qww@dsdf.dsdf")
+    # contacts.add_email("Sergiy", "qww@dsdf.dsdf")
+    # contacts.add_address("Sergiy", "Київ де не де")
+    # contacts.add_record("Angela")
+    # contacts.add_address("Sergiy", "Ytw")
+    # contacts.add_birthday("Sergiy", "1.05.1987")
+    # contacts.delete_phone_by_index("Sergiy", 2)
+    # contacts.delete_email_by_index("Sergiy", 0)
+    # contacts.add_record("Lego")
+    # print(type(contacts) == AddressBook)
+    # # print(contacts.upcoming_birthdays(3))
