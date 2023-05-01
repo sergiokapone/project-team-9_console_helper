@@ -1,90 +1,70 @@
-from collections import UserList
+from collections import namedtuple, UserList
 from datetime import datetime
+from prettytable import PrettyTable
+
+Note = namedtuple("Note", ["tags", "date", "text"])
 
 
 class Notebook(UserList):
-    def add_record(self, record):
-        self.data.append(record)
+    def update(self, notes):
+        self.data.clear()
+        self.data.extend(notes)
 
-    def delete_record_by_id(self, record_id):
-        for order_number, value in enumerate(self.data):
-            if order_number == record_id:
-                self.data.pop(record_id)
-    """Здесь нужно добавить вывод сообщения с информацией об удаленной записи через return 'запись №record_id была удалена' или 'Запись не найдена'"""
+    def add_note(self, tags, note_text):
+        note = Note(tags=tags, date=datetime.now(), text=note_text)
+        self.data.append(note)
 
-    def find_record_by_tag(self, tag):
-        result = []  # list of notes with the requested tag
-        for record in self.data:
-            for tag_ in record.tags:
-                if tag == tag_.value:
-                    result.append(str(record))
+    def remove_note(self, index):
+        self.data.pop(index)
 
-        return result if result else f"Tag '{tag}' not found"
+    def display_notes(self, tag=None):
+        if tag is None:
+            return self.data
+        else:
+            return [note for note in self.data if tag in note.tags]
 
-    def find_record_by_text(self, text_part):
-        result = []
-        if text_part:
-            for record in self.data:
-                if text_part in record.note.value:
-                    result.append(str(record))
-            return result if result else f"The text '{text_part}' not found in notes"
-        return "You entered an empty string! Please Try again."
+    def find_notes(self, search_term):
+        return [note for note in self.data if search_term in note.text]
 
-    def find_record_by_date(self, date):
-        result = []
-        for record in self.data:
-            if date == record.date:  # date in format 30 April 2023
-                result.append(str(record))
+    def sort_notes_by_tag(self):
+        return sorted(self.data, key=lambda note: tuple(note.tags))
 
-        return result if result else "No notes on this day"
+    def add_tag(self, index, tag):
+        note = self.data[index]
+        note_tags = list(note.tags)
+        note_tags.append(tag)
+        self.data[index] = note._replace(tags=tuple(note_tags))
 
-    def find_record_by_id(self, id_record):
-        result = []
-        id_found = False
-        for id, record in enumerate(self.data):
-            if id == id_record:
-                result.append(str(record))
-                id_found = True
-        if not id_found:
-            return 'Id not found'
-        return result
-        
+    def edit_note(self, index, new_text):
+        note = self.data[index]
+        self.data[index] = note._replace(text=new_text)
+
+    def __len__(self):
+        return len(self.data)
 
 
-class Field:
-    def __init__(self, value):
-        self.value = value
+# отладка
+if __name__ == "__main__":
+    notebook = Notebook()
+    notebook.add_note(["Rec"], "Mu fully featured class")
+    notebook.add_note(["Rec"], "My new note")
+    notebook.add_note(["Alarm"], "My new2 note")
 
+    def display_notes_table(notes):
+        table = PrettyTable()
+        table.field_names = ["Index", "Tags", "Cration Date", "Text"]
+        for i, note in enumerate(notes):
+            date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
+            table.add_row([i, ", ".join(note.tags), date_str, note.text])
+        return table
 
-class Tags(Field):
-    def __str__(self):
-        return self.value
+    notebook.add_tag(0, "Curl")
+    notebook.sort_notes_by_tag()
+    b = display_notes_table(notebook.display_notes())
+    print(b)
 
+    notebook.remove_note(0)
+    notebook.edit_note(0, "Wow!")
 
-class Note(Field):
-    def __str__(self):
-        return self.value
-
-
-class Record:
-    def __init__(self, note):
-        self.note = Note(value=note)
-        self.tags = []
-        self.date = datetime.today().strftime("%d %B %Y")  # date in format 30 April 2023
-
-
-    def add_tag(self, tag):
-        self.tags.append(Tags(tag))
-
-    def change_note(self, new_note):
-        self.note = Note(value=new_note)
-
-    def __str__(self):
-        """Добавить окрашивание тегов в какой-нибуть цвет, чтобы визуально отделить их от основного текста"""
-        result = [self.note.value]
-        for tag in self.tags:
-            result.append(str(tag))
-        result.append(self.date)
-
-        return ", ".join(result)
-    
+    a = display_notes_table(notebook.display_notes())
+    print(a)
