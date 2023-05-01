@@ -16,4 +16,7 @@ setup(
         "transliterate",
         "prompt-toolkit==3.0",
     ],
+    package_data={
+        "": ["README.md"],
+    },
 )

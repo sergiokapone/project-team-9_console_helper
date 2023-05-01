@@ -402,11 +402,13 @@ def search_notes(*args):
 def help_commands(*args):
     """Функція показує перелік всіх команд."""
 
-    file_path = "readme.md"
-    if not os.path.exists(file_path):
-        return R + "File {file_path} not found." + N
+    PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
+    README_PATH = os.path.join(PACKAGE_ROOT, "../README.md")
 
-    with open(file_path, "r") as file:
+    if not os.path.exists(README_PATH):
+        return R + f"File {README_PATH} not found." + N
+
+    with open(README_PATH, "r") as file:
         code = file.read()
         lexer = get_lexer_by_name("markdown")
         formatted_code = highlight(code, lexer, TerminalFormatter())
