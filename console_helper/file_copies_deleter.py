@@ -83,7 +83,7 @@ def copies_deleter(root):
     count_files(path_to_dir)
 
     print("Looking for copies...")
-    time.sleep(1)
+    time.sleep(0.5)
 
     copy_count, hash_dict = count_copies(path_to_dir)
     print(f"{G}Copies found:{Y} {copy_count}{N}")

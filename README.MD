@@ -5,6 +5,12 @@ you to manage your contacts and notes.
 
 The assistant saves contacts and notes to the folder of the current user.
 For example, in `Windows` is a folder `C:Users\<Usaer>\`
+with names
+
+- `contacts.bin`
+- `notes.bin`
+
+  respectively.
 
 ## Install and Run Assistant
 
@@ -87,7 +93,7 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> remove note 2` --- remove note with index `2`.
 - `>>> show notes` --- just show all notes.
 - `>>> show notes Rec` --- show all notes with tag `Rec`.
-- `>>> chamge note 1 New text` --- change note `1` with `New text`.
+- `>>> change note 1 New text` --- change note `1` with `New text`.
 
 [^2]: When creating a note, you can assign only one tag. You can add subsequent tags with `add tag` command.
 
