@@ -63,15 +63,15 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> set phone Username 0935841245` --- add phone[^1] to contact `Username` in address book.
   If contact was absent
 - `>>> set birthday Username 12.12.1978` --- add birthday[^1] to contact `Username` in address book.
-- `>>> set email my_name@gmail.com` --- add email[^1] to contact `Username` in address book.
-- `>>> upcoming birthdays 5`
-- `>>> show contact Username`
+- `>>> set email my_name@gmail.com` --- add email[^1] `my_name@gmail.com` to contact `Username` in address book.
+- `>>> upcoming birthdays 5` --- shows contacts with upcoming birthdays within `5` days.
+- `>>> show contact Username` --- show contact `Username` information.
 - `>>> search contact SearchQuery` --- where `SearchQuery` some word
-  or part of number for searching
-- `>>> remove contact Username`.
+  or number for searching.
+- `>>> remove contact Username` --- remove contact `Uresname`
 - `>>> remove phone Username 1` --- remove user phone by index `1`.
 - `>>> remove email Username 2` --- remove user email by index `2`.
-- `>>>edit note 1 New text`: Edit note by `1`.
+- `>>> edit note 1 New text` --- edit note by `1`.
 
 [^1]: If the contact is missing, it will be added automatically
 
@@ -79,8 +79,10 @@ To manage contacts in your address book, You can type commands by following exam
 
 To manage contacts in your address book, You can type commands by following examples:
 
-- `>>> add note Tag Text of your note` --- where `Tag` is a tag of your note.
+- `>>> add note Tag Text of your note` --- where `Tag`[^2] is a tag of your note.
 - `>>> add tag 1 Mytag` --- add tag `Mytag` to note with index `1`.
 - `>>> remove note 2` --- remove note with index `2`.
 - `>>> show notes` --- just show all notes.
 - `>>> show notes Rec` --- show all notes with tag `Rec`.
+
+[^2]: When creating a note, you can assign only one tag. You can add subsequent tags with `add tag` command.
