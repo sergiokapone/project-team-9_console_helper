@@ -1,5 +1,4 @@
 import shutil
-import sys
 import random
 from pathlib import Path
 from .file_copies_deleter import copies_deleter
@@ -118,7 +117,6 @@ def remove_empty(path):
 
 
 def known_exts(root):
-
     exts = set()
     for item in Path(root).iterdir():
         if item.is_dir():
@@ -140,54 +138,45 @@ def rand_string():
 """ ======================== Основна програма =============================="""
 
 
-def main(root):
-    agreement = input(
-        f"{Y}WARNING! {G}Are you sure you want to sort the files in CATALOG {Y + root}{N}? (y/n): "
-    )
+def sort_folder(root):
+    if Path(root).is_dir():
+        agreement = input(
+            f"{Y}WARNING! {G}Are you sure you want to sort the files in CATALOG {Y + root}{N}? (y/n): "
+        )
 
-    if agreement in ("y", "Y", "yes", "Yes", "YES"):
-        create_folders(root)
-        unknown_exts = sort_dir(root)
-        remove_empty(root)
+        if agreement in ("y", "Y", "yes", "Yes", "YES"):
+            create_folders(root)
+            unknown_exts = sort_dir(root)
+            remove_empty(root)
 
-        print(f"{G}Known extensions:{N}")
+            print(f"{G}Known extensions:{N}")
 
-        for ext in known_exts(root):
-            print(ext)
-
-        if len(unknown_exts) != 0:
-
-            print(f"{R}Unknown extensions:{N}")
-
-            for ext in unknown_exts:
+            for ext in known_exts(root):
                 print(ext)
 
-        print(f"{G}Files in folders:{N}")
+            if len(unknown_exts) != 0:
+                print(f"{R}Unknown extensions:{N}")
 
-        for item in Path(root).iterdir():
-            if item.is_dir():
-                num_of_files = len(
-                    [
-                        file
-                        for file in Path(root).joinpath(item).iterdir()
-                        if file.is_file()
-                    ]
-                )
-                print(
-                    f"{G}Folder {Y}{item.name}{G} contain {Y}{num_of_files}{G} file(s){N}"
-                )
+                for ext in unknown_exts:
+                    print(ext)
+
+            print(f"{G}Files in folders:{N}")
+
+            for item in Path(root).iterdir():
+                if item.is_dir():
+                    num_of_files = len(
+                        [
+                            file
+                            for file in Path(root).joinpath(item).iterdir()
+                            if file.is_file()
+                        ]
+                    )
+                    print(
+                        f"{G}Folder {Y}{item.name}{G} contain {Y}{num_of_files}{G} file(s){N}"
+                    )
+        else:
+            print(f"{G}Operation approved!{N}")
+
+        return copies_deleter(root)
     else:
-        print(f"{G}Operation approved!{N}")
-
-    copies_deleter(root)
-
-
-def run():
-    try:
-        main(sys.argv[1])
-    except IndexError:
-        print(f"{G}usage: {Path(__file__).name} indir{N}")
-
-
-if __name__ == "__main__":
-    run()
+        return f"{Y}Warning!{N} The {root} is not valid path!"

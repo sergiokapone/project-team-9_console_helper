@@ -22,7 +22,7 @@ from .notebook import Notebook
 
 from .serializer import PickleStorage
 
-from .filesorter import main as sort_main
+from .filesorter import sort_folder
 
 from .colors import G, B, P, R, N, Y
 
@@ -421,9 +421,10 @@ def help_commands(*args):
 
 
 @input_error
-def sort_folder(*args):
-    sort_main(args[0])
-    return f"Folder {args[0]} sorted"
+def sort_folder_cli(*args):
+    if not args[0]:
+        raise ValueError("Give me a folder name, please.")
+    return sort_folder(args[0])
 
 
 def cls(*args):
@@ -463,7 +464,7 @@ COMMANDS = {
     "search notes": search_notes,
     "change note": change_note,
     # --- Sorting folder commnad ---
-    "sort folder": sort_folder,
+    "sort folder": sort_folder_cli,
     # --- Googd bye commnad ---
     "good bye": good_bye,
     "close": good_bye,
