@@ -317,17 +317,18 @@ def add_tag(*args):
     return f"I addes tag {args[1]} to note {args[0]}"
 
 
-def display_notes_table(notes, offset=0):
+def build_notes_table(notes, original_indices=False):
     table = PrettyTable()
-    table.field_names = ["Index", "Tags", "Cration Date", "Text"]
+    table.field_names = ["Index", "Tags", "Creation Date", "Text"]
     table.max_width["Text"] = 79
     table.set_style(SINGLE_BORDER)
-    for i, note in enumerate(notes):
+    for note, index in notes:
+        if original_indices:
+            index = notebook.data.index(note)
         date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
-        index = f"{G}{i+offset}{N}"
         table.add_row(
             [
-                index,
+                f"{G}{index}{N}",
                 ", ".join(note.tags),
                 f"{Y}{date_str}{N}",
                 f"{B}{note.text}{N}",
@@ -339,16 +340,18 @@ def display_notes_table(notes, offset=0):
 
 @input_error
 def show_notes(*args):
-    if args[0]:
-        notes = notebook.display_notes(tag=args[0])
-    else:
-        notes = notebook.display_notes()
-    return display_notes_table(notes)
+    notes = notebook.display_notes(tag=args[0] or None, original_indices=True)
+    return build_notes_table(notes, original_indices=True)
 
 
-# @input_error
-def sort_notes(*args):
-    return display_notes_table(notebook.sort_notes_by_tag())
+@input_error
+def search_notes(*args):
+    if not args[0]:
+        raise KeyError("Please, add searh query")
+    results = notebook.find_notes(args[0])
+    if not results:
+        return f"{R}Nothing found for tag {args[0]}{N}"
+    return build_notes_table(results)
 
 
 @input_error
@@ -362,7 +365,7 @@ def save_notes(*args):
 @input_error
 def change_note(*args):
     if not args[0]:
-        raise KeyError("Please, pu unteger index")
+        raise KeyError("Please, set integer index")
 
     notebook.change_note(int(args[0]), args[1])
 
@@ -379,27 +382,6 @@ def load_notes(*args):
         return f"File {args[0]} loaded"
     else:
         raise FileNotFoundError
-
-
-@input_error
-def search_notes(*args):
-    results = notebook.find_notes(args[0])
-    table = PrettyTable()
-    table.field_names = ["Index", "Tags", "Creation Date", "Text"]
-    table.max_width["Text"] = 79
-    table.set_style(SINGLE_BORDER)
-    for note, index in results:
-        date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
-        table.add_row(
-            [
-                f"{G}{index}{N}",
-                ", ".join(note.tags),
-                f"{Y}{date_str}{N}",
-                f"{B}{note.text}{N}",
-            ],
-            divider=True,
-        )
-    return f"{N + str(table)}"
 
 
 # =========================================================================== #
@@ -452,7 +434,6 @@ COMMANDS = {
     "add tag": add_tag,
     "remove note": remove_note,
     "show notes": show_notes,
-    "sort notes": sort_notes,
     "save notes": save_notes,
     "load notes": load_notes,
     "search notes": search_notes,
