@@ -29,7 +29,11 @@ class Notebook(UserList):
 
     def find_notes(self, search_term):
         """Шукає нотатки за текстом"""
-        return [note for note in self.data if search_term in note.text]
+        results = []
+        for i, note in enumerate(self.data):
+            if search_term in note.text:
+                results.append((note, i))
+        return results
 
     def sort_notes_by_tag(self):
         """Шукає нотатку за тегом"""

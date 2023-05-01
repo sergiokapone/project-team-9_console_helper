@@ -381,7 +381,23 @@ def load_notes(*args):
 
 @input_error
 def search_notes(*args):
-    return f"{G}{display_notes_table(notebook.find_notes(args[0]))}{N}"
+    results = notebook.find_notes(args[0])
+    table = PrettyTable()
+    table.field_names = ["Index", "Tags", "Creation Date", "Text"]
+    table.max_width["Text"] = 79
+    table.set_style(SINGLE_BORDER)
+    for note, index in results:
+        date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
+        table.add_row(
+            [
+                f"{G}{index}{N}",
+                ", ".join(note.tags),
+                f"{Y}{date_str}{N}",
+                f"{B}{note.text}{N}",
+            ],
+            divider=True,
+        )
+    return f"{N + str(table)}"
 
 
 # =========================================================================== #
