@@ -516,7 +516,7 @@ def main():
         handler = get_handler(*params)
         response = handler(*params[1:])
         print(f"{G + response + N}")
-        print("\n\n")
+        print("\n")
 
         if response == "Good bye!":
             return None
