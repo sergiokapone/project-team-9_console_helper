@@ -325,7 +325,12 @@ def display_notes_table(notes):
     for i, note in enumerate(notes):
         date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
         table.add_row(
-            [f"{G}{i}{N}", ", ".join(note.tags), f"{Y}{date_str}{N}", note.text],
+            [
+                f"{G}{i}{N}",
+                ", ".join(note.tags),
+                f"{Y}{date_str}{N}",
+                f"{B}{note.text}{N}",
+            ],
             divider=True,
         )
     return f"{N + str(table)}"
@@ -513,7 +518,7 @@ def main():
         handler = get_handler(*params)
         response = handler(*params[1:])
         print(f"{G + response + N}")
-        print("\n\n")
+        print("\n")
 
         if response == "Good bye!":
             return None
