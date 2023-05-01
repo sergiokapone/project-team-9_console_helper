@@ -20,12 +20,16 @@ class Notebook(UserList):
         """Видапляє нотатку"""
         self.data.pop(index)
 
-    def display_notes(self, tag=None):
-        """Показує нотатки"""
-        if tag is None:
-            return self.data
-        else:
-            return [note for note in self.data if tag in note.tags]
+    def display_notes(self, tag=None, original_indices=False):
+        """Показывает заметки, может фильтровать по тегу, возвращает исходные индексы если original_indices=True"""
+        notes = self.data
+        if tag is not None:
+            notes = [note for note in notes if tag in note.tags]
+        if original_indices:
+            notes = [
+                (note, index) for index, note in enumerate(self.data) if note in notes
+            ]
+        return notes
 
     def find_notes(self, search_term):
         """Шукає нотатки за текстом"""
@@ -50,10 +54,6 @@ class Notebook(UserList):
         """Замінює текст нотатки"""
         note = self.data[index]
         self.data[index] = note._replace(text=new_text)
-
-    def edit_note_word(self, index, new_text):
-        """Редагує текс в нотатці"""
-        ...
 
     def __len__(self):
         return len(self.data)
