@@ -53,7 +53,7 @@ For example, in `Windows` is a folder `C:Users\<Usaer>\`
 - `sort folder`: Sorts the notes in ascending or descending order by date or title.
 - `edit note`: Edit note by index.
 
-## Usage Examples
+## ====== Usage Examples ======
 
 ### Sort folder
 
