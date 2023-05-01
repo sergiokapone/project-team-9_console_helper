@@ -1,7 +1,7 @@
 from setuptools import setup, find_namespace_packages
 
 setup(
-    name="helper",
+    name="assistant",
     version="1.0.0",
     description="Command line helper",
     author="Team 9",
@@ -11,7 +11,7 @@ setup(
     packages=find_namespace_packages(),
     entry_points={"console_scripts": ["assistant = console_helper.CLI:main"]},
     install_requires=[
-        "prettytable",
+        "prettytable==3.7.0",
         "Pygments",
         "transliterate",
         "prompt-toolkit==3.0",
