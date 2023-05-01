@@ -551,7 +551,7 @@ def main():
         params = parse_command(command)
         handler = get_handler(*params)
         response = handler(*params[1:])
-        print(f"{G + response + N}")
+        print(f"{G}{response}{N}")
 
         if response == "Good bye!":
             return None

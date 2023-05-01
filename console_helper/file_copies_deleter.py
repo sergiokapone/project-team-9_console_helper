@@ -62,7 +62,7 @@ def delete_files(hash_dictionary):
     total_deleted = 0
     for path_dict in hash_dictionary.values():
         for file_path in path_dict[1:]:
-            total_deleted += getsize(file_path) / 1048576  # size in MB
+            total_deleted += getsize(file_path) / (1024 * 1024)  # size in MB
             os.remove(file_path)  # Deleting a file
 
     return round(total_deleted, 2)
