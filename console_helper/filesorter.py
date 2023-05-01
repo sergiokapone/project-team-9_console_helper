@@ -6,6 +6,9 @@ from .file_copies_deleter import copies_deleter
 
 from .normaliser import normalise
 
+from .colors import G, R, N, Y
+
+
 EXT_FOLDER = {
     ("mp3", "ogg", "waw", "amr"): "audio",
     ("avi", "mp4", "mov", "mkv", "flv"): "video",
@@ -139,7 +142,7 @@ def rand_string():
 
 def main(root):
     agreement = input(
-        f"WARNING! Are you sure you want to sort the files in CATALOG {root}? (y/n): "
+        f"{Y}WARNING! {G}Are you sure you want to sort the files in CATALOG {Y + root}{N}? (y/n): "
     )
 
     if agreement in ("y", "Y", "yes", "Yes", "YES"):
@@ -147,25 +150,19 @@ def main(root):
         unknown_exts = sort_dir(root)
         remove_empty(root)
 
-        print("-------------------")
-        print("Known extensions:")
-        print("-------------------")
+        print(f"{G}Known extensions:{N}")
 
         for ext in known_exts(root):
             print(ext)
 
         if len(unknown_exts) != 0:
 
-            print("-------------------")
-            print("Unknown extensions:")
-            print("-------------------")
+            print(f"{R}Unknown extensions:{N}")
 
             for ext in unknown_exts:
                 print(ext)
 
-        print("-------------------")
-        print("Files in folders:")
-        print("-------------------")
+        print(f"{G}Files in folders:{N}")
 
         for item in Path(root).iterdir():
             if item.is_dir():
@@ -176,9 +173,11 @@ def main(root):
                         if file.is_file()
                     ]
                 )
-                print(f"Folder {item.name} contain {num_of_files} file(s)")
+                print(
+                    f"{G}Folder {Y}{item.name}{G} contain {Y}{num_of_files}{G} file(s){N}"
+                )
     else:
-        print("Operation approved!")
+        print(f"{G}Operation approved!{N}")
 
     copies_deleter(root)
 
@@ -187,7 +186,7 @@ def run():
     try:
         main(sys.argv[1])
     except IndexError:
-        print(f"\033[1;32musage: {Path(__file__).name} indir\033[0m")
+        print(f"{G}usage: {Path(__file__).name} indir{N}")
 
 
 if __name__ == "__main__":

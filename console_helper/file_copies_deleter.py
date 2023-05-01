@@ -4,6 +4,7 @@ import hashlib
 import time
 from os.path import join, getsize
 
+from .colors import G, R, N, Y
 
 # Getting an absolut path to directory with files
 # def get_path_dir():
@@ -24,7 +25,7 @@ def count_files(abs_path, file_format=""):
             if file.endswith(file_format):
                 total_count_files += 1
 
-    print(f"Files found: {total_count_files}")
+    print(f"{G}Files found:{N} {Y}{total_count_files}{N}")
 
 
 # The function takes absolute path to file and returns its hash
@@ -85,11 +86,13 @@ def copies_deleter(root):
     time.sleep(1)
 
     copy_count, hash_dict = count_copies(path_to_dir)
-    print(f"Copies found: {copy_count}")
+    print(f"{G}Copies found:{Y} {copy_count}{N}")
 
     if copy_count != 0:
         while True:
-            want_delete = input("Do you want to delete the detected copies (y/n)? ")
+            want_delete = input(
+                f"{G}Do you want to delete the detected copies (y/n)?{N} "
+            )
 
             if want_delete in ("yes", "YES", "Y", "y"):
                 total_deleted = delete_files(hash_dict)
@@ -97,11 +100,11 @@ def copies_deleter(root):
                 time.sleep(3)
                 break
             elif want_delete in ("n", "N", "no", "NO"):
-                print("Ok. Good bye!")
+                print(f"{G}Ok{N}")
                 time.sleep(2)
                 break
             else:
-                print("You entered a non-existent command. Please try again.\n")
+                print(f"{R}You entered a non-existent command. Please try again.{N}\n")
 
         delete_empty_folders(path_to_dir)
 

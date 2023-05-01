@@ -20,25 +20,7 @@ from .serializer import PickleStorage
 
 from .filesorter import main as sort_main
 
-# ============================== ANSI Colors =================================#
-
-G = "\033[0;32;40m"  # GREEN
-B = "\033[96m"  # Blue
-P = "\033[95m"  # Pink
-R = "\033[1;31m"  # Red
-N = "\033[0m"  # Reset
-Y = "\033[0;33;40m"  # Yellow
-
-# style = Style.from_dict(
-#     {
-#         "green": "#00ff00",
-#         "blue": "#0080ff",
-#         "pink": "#ff69b4",
-#         "red": "#ff0000",
-#         "yellow": "#ffff00",
-#         "reset": "",
-#     }
-# )
+from .colors import G, B, P, R, N, Y
 
 
 # ================================= Decorator ================================#
