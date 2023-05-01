@@ -6,6 +6,9 @@ import os.path
 from pathlib import Path
 from difflib import get_close_matches
 
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completion, Completer
+
 from prettytable import PrettyTable, SINGLE_BORDER
 
 from pygments import highlight
@@ -446,6 +449,17 @@ COMMANDS = {
     "exit": good_bye,
 }
 
+
+class CommandCompleter(Completer):
+    def get_completions(self, document, complete_event):
+        word_before_cursor = document.get_word_before_cursor()
+        matches = [c for c in COMMANDS if c.startswith(word_before_cursor)]
+        for m in matches:
+            yield Completion(m, start_position=-len(word_before_cursor))
+
+
+session = PromptSession(completer=CommandCompleter())
+
 command_pattern = "|".join(COMMANDS.keys())
 pattern = re.compile(
     r"\b(\.|"
@@ -506,7 +520,8 @@ def main():
     load(CONTACT_FILE)
     load_notes(NOTES_FILE)
     while True:
-        command = wait_for_input(">>> ")
+        # command = wait_for_input(">>> ")
+        command = session.prompt(">>> ")
 
         if command.strip() == ".":
             save(CONTACT_FILE)
