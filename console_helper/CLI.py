@@ -8,6 +8,7 @@ from difflib import get_close_matches
 
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completion, Completer
+from prompt_toolkit.shortcuts import clear
 
 from prettytable import PrettyTable, SINGLE_BORDER
 
@@ -410,6 +411,11 @@ def sort_folder(*args):
     return f"Folder {args[0]} sorted"
 
 
+def cls(*args):
+    clear()
+    return HELLO_MESSAGE
+
+
 # =============================== handler loader =============================#
 
 COMMANDS = {
@@ -447,6 +453,7 @@ COMMANDS = {
     "good bye": good_bye,
     "close": good_bye,
     "exit": good_bye,
+    "cls": cls,
 }
 
 
@@ -510,13 +517,12 @@ notebook = Notebook()  # Global variable for storing notes
 
 NOTES_FILE = "notes.bin"
 CONTACT_FILE = "contacts.bin"
+HELLO_MESSAGE = f"{G}Hello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType {Y}help{G} for more information.{N}"
 
 
 def main():
     os.system("cls" if os.name == "nt" else "clear")
-    print(
-        f"{G}Hello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType {Y}help{G} for more information.{N}"
-    )
+    print(HELLO_MESSAGE)
     load(CONTACT_FILE)
     load_notes(NOTES_FILE)
     while True:
@@ -532,7 +538,6 @@ def main():
         handler = get_handler(*params)
         response = handler(*params[1:])
         print(f"{G + response + N}")
-        print("\n")
 
         if response == "Good bye!":
             return None
