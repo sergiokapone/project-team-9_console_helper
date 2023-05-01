@@ -33,9 +33,10 @@ class Notebook(UserList):
 
     def find_notes(self, search_term):
         """Шукає нотатки за текстом"""
+        search_term = search_term.lower()
         results = []
         for i, note in enumerate(self.data):
-            if search_term in note.text:
+            if search_term in note.text.lower():
                 results.append((note, i))
         return results
 
