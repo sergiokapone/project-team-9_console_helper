@@ -35,7 +35,7 @@ class Notebook(UserList):
         note_tags.append(tag)
         self.data[index] = note._replace(tags=tuple(note_tags))
 
-    def edit_note(self, index, new_text):
+    def change_note(self, index, new_text):
         note = self.data[index]
         self.data[index] = note._replace(text=new_text)
 

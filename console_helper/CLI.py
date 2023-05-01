@@ -358,13 +358,13 @@ def save_notes(*args):
 
 
 @input_error
-def edit_note(*args):
+def change_note(*args):
     if not args[0]:
         raise KeyError("Please, pu unteger index")
 
-    notebook.edit_note(int(args[0]), args[1])
+    notebook.change_note(int(args[0]), args[1])
 
-    return f"I edited note {args[0]}"
+    return f"I changed note {args[0]}"
 
 
 @input_error
@@ -438,7 +438,7 @@ COMMANDS = {
     "save notes": save_notes,
     "load notes": load_notes,
     "search notes": search_notes,
-    "edit note": edit_note,
+    "change note": change_note,
     # --- Sorting folder commnad ---
     "sort folder": sort_folder,
     # --- Googd bye commnad ---
