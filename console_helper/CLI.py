@@ -56,8 +56,9 @@ def hello(*args):
 
 
 def good_bye(*args):
-    PickleStorage.export_file(contacts, CONTACT_FILE)
     os.system("cls" if os.name == "nt" else "clear")
+    save(CONTACT_FILE)
+    save_notes(NOTES_FILE)
     return "Good bye!"
 
 
@@ -74,6 +75,9 @@ def undefined(*args):
 
 @input_error
 def save(*args):
+    if not args[0]:
+        raise ValueError("Give me a filename")
+
     home_path = Path.home()
     file_path = home_path / args[0]
     PickleStorage.export_file(contacts, file_path)
@@ -82,6 +86,9 @@ def save(*args):
 
 @input_error
 def load(*args):
+    if not args[0]:
+        raise ValueError("Give me a filename")
+
     home_path = Path.home()
     file_path = home_path / args[0]
     if PickleStorage.is_file_exist(file_path):
@@ -303,6 +310,9 @@ def show_contacts(*args):
 
 @input_error
 def add_note(*args):
+    if not args[0]:
+        raise KeyError("Give me a name, please")
+
     notebook.add_note([args[0]], args[1])
     return "I added note"
 
@@ -360,6 +370,8 @@ def search_notes(*args):
 
 @input_error
 def save_notes(*args):
+    if not args[0]:
+        raise ValueError("Give me a filename")
     home_path = Path.home()
     file_path = home_path / args[0]
     PickleStorage.export_file(notebook, file_path)
@@ -378,6 +390,9 @@ def change_note(*args):
 
 @input_error
 def load_notes(*args):
+    if not args[0]:
+        raise ValueError("Give me a filename")
+
     home_path = Path.home()
     file_path = home_path / args[0]
     if PickleStorage.is_file_exist(file_path):
@@ -517,7 +532,7 @@ notebook = Notebook()  # Global variable for storing notes
 
 NOTES_FILE = "notes.bin"
 CONTACT_FILE = "contacts.bin"
-HELLO_MESSAGE = f"{G}Hello, I'm an assistant v1.0.0 (c) Team-9, GoIT 2023.\nType {Y}help{G} for more information.{N}"
+HELLO_MESSAGE = f"{N}Hello, I'm an assistant v1.0.0 {G}(c) Team-9, GoIT 2023.{N}\nType {Y}help{N} for more information.{N}"
 
 
 def main():

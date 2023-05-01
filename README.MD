@@ -54,8 +54,8 @@ with names
 - `show notes`: Shows the list of saved notes.
 - `search notes`: Searches for a specific note by title or date.
 - `remove note`: Removes a note from the list.
-- `save`: Saves the data to a file.
-- `load`: Loads the data from a file.
+- `save notes`: Saves the notes to a file.
+- `load notes`: Loads the notes from a file.
 - `sort folder`: Sorts the notes in ascending or descending order by date or title.
 - `edit note`: Edit note by index.
 
