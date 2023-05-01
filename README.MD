@@ -6,7 +6,7 @@ you to manage your contacts and notes.
 The assistant saves contacts and notes to the folder of the current user.
 For example, in `Windows` is a folder `C:Users\<Usaer>\`
 
-## Run Assistant
+## Install and Run Assistant
 
 - Clone repository `https://github.com/sergiokapone/project-team-9_console_helper.git`
 - Crate virtual environment in folder contains `setup.py`
