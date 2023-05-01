@@ -71,7 +71,6 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> remove contact Username` --- remove contact `Uresname`
 - `>>> remove phone Username 1` --- remove user phone by index `1`.
 - `>>> remove email Username 2` --- remove user email by index `2`.
-- `>>> edit note 1 New text` --- edit note by `1`.
 
 [^1]: If the contact is missing, it will be added automatically
 
@@ -84,6 +83,7 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> remove note 2` --- remove note with index `2`.
 - `>>> show notes` --- just show all notes.
 - `>>> show notes Rec` --- show all notes with tag `Rec`.
+- `>>> edit note 1 New text` --- edit note by `1`.
 
 [^2]: When creating a note, you can assign only one tag. You can add subsequent tags with `add tag` command.
 
