@@ -7,37 +7,49 @@ Note = namedtuple("Note", ["tags", "date", "text"])
 
 class Notebook(UserList):
     def update(self, notes):
+        """Оновлює нотатки. Треба для читання з файлу"""
         self.data.clear()
         self.data.extend(notes)
 
     def add_note(self, tags, note_text):
+        """Додає нотатку з одним тегом"""
         note = Note(tags=tags, date=datetime.now(), text=note_text)
         self.data.append(note)
 
     def remove_note(self, index):
+        """Видапляє нотатку"""
         self.data.pop(index)
 
     def display_notes(self, tag=None):
+        """Показує нотатки"""
         if tag is None:
             return self.data
         else:
             return [note for note in self.data if tag in note.tags]
 
     def find_notes(self, search_term):
+        """Шукає нотатки за текстом"""
         return [note for note in self.data if search_term in note.text]
 
     def sort_notes_by_tag(self):
+        """Шукає нотатку за тегом"""
         return sorted(self.data, key=lambda note: tuple(note.tags))
 
     def add_tag(self, index, tag):
+        """Додає текст до нотатки"""
         note = self.data[index]
         note_tags = list(note.tags)
         note_tags.append(tag)
         self.data[index] = note._replace(tags=tuple(note_tags))
 
     def change_note(self, index, new_text):
+        """Замінює текст нотатки"""
         note = self.data[index]
         self.data[index] = note._replace(text=new_text)
+
+    def edit_note_word(self, index, new_text):
+        """Редагує текс в нотатці"""
+        ...
 
     def __len__(self):
         return len(self.data)
