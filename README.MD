@@ -40,7 +40,7 @@ For example, in `Windows` is a folder `C:Users\<Usaer>\`
 
 ## Sorting Folder
 
-- `sort folder`: Sort folder. Usage `sort folder D:\MyGarbage\`
+- `sort folder`: Sort folder.
 
 ## Manage notes commands
 
@@ -53,7 +53,13 @@ For example, in `Windows` is a folder `C:Users\<Usaer>\`
 - `sort folder`: Sorts the notes in ascending or descending order by date or title.
 - `edit note`: Edit note by index.
 
-## Using - Manage contacts
+## Usage Examples
+
+### Sort folder
+
+- `>>> sort folder D:\MyGarbage\` --- sort files in folder `D:\MyGarbage\`
+
+### Manage contacts
 
 To manage contacts in your address book, You can type commands by following examples:
 
@@ -74,7 +80,7 @@ To manage contacts in your address book, You can type commands by following exam
 
 [^1]: If the contact is missing, it will be added automatically
 
-## Using - Manage notes
+### Manage notes
 
 To manage contacts in your address book, You can type commands by following examples:
 
@@ -87,7 +93,7 @@ To manage contacts in your address book, You can type commands by following exam
 
 [^2]: When creating a note, you can assign only one tag. You can add subsequent tags with `add tag` command.
 
-## Using - Exit programm
+### Exit programm
 
 To exit the program just type following commands `good bye`, `close` or `exit`.
 Another possibility to exit without any messages is typing `.`.
