@@ -354,7 +354,7 @@ def search_notes(*args):
         raise KeyError("Please, add searh query")
     results = notebook.find_notes(args[0])
     if not results:
-        return f"{R}Nothing found for tag {args[0]}{N}"
+        return f"{R}Nothing found for {args[0]}{N}"
     return build_notes_table(results)
 
 
@@ -482,9 +482,9 @@ def get_handler(*args):
     return COMMANDS.get(args[0], undefined)
 
 
-def wait_for_input(prompt):
+def wait_for_input():
     while True:
-        inp = input(prompt).strip()
+        inp = session.prompt(">>> ")
         if inp == "":
             continue
         break
@@ -526,9 +526,7 @@ def main():
     load(CONTACT_FILE)
     load_notes(NOTES_FILE)
     while True:
-        # command = wait_for_input(">>> ")
-        command = session.prompt(">>> ")
-
+        command = wait_for_input()
         if command.strip() == ".":
             save(CONTACT_FILE)
             save_notes(NOTES_FILE)
