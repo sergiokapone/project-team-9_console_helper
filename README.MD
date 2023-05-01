@@ -86,3 +86,11 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> show notes Rec` --- show all notes with tag `Rec`.
 
 [^2]: When creating a note, you can assign only one tag. You can add subsequent tags with `add tag` command.
+
+## Using - Exit programm
+
+To exit the program just type following commands `good bye`, `close` or `exit`.
+Another possibility to exit without any messages is typing `.`.
+
+After executing the specified commands, the application will save your data automatically.
+Upon subsequent program entry, the data will be loaded automatically.
