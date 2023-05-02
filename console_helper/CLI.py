@@ -140,11 +140,9 @@ def add_contact(*args):
 
     if rest_args:
         parsed_params = parse_contact_params(" ".join(args[1:]))
-        print(parsed_params)
         phone = parsed_params[0]
         birthday = parsed_params[1]
         email = parsed_params[2]
-        print(phone, birthday, email)
 
         if phone:
             contacts.add_phone(name, phone)
@@ -484,42 +482,24 @@ def build_notes_table(notes, original_indices=False):
             ],
             divider=True,
         )
-    return f"{N + str(table)}"
+    return table
 
-def build_notes_table_iterator(notes, original_indices=False):
-    table = PrettyTable()
-    table.field_names = ["Index", "Tags", "Creation Date", "Text"]
-    table.max_width["Text"] = 79
-    table.set_style(SINGLE_BORDER)
-    
-    for i, note in enumerate(notes):
-        if original_indices:
-            index = notebook.data.index(note)
-        date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
-        table.add_row(
-            [
-                i + 1,
-                ", ".join(note.tags),
-                f"{Y}{date_str}{N}",
-                f"{B}{note.text}{N}",
-            ],
-            divider=True,
-        )
-    return f"{N + str(table)}"
 
 # @input_error
-def show_notes(*args):     
-    number_of_entries = (
-    int(args[0])
-    if args[0] is not None and isinstance(args[0], str) and args[0].isdigit()
-    else 20
-    )
-    for tab in notebook.iterator_notes(number_of_entries):
-        if tab == "continue":
-            input("\033[1;32mPress <Enter> to continue...\033[0m")
-        else:
-            print(build_notes_table_iterator(tab))
-    return f"Address book contain {len(notebook)} contacts"
+def show_notes(*args):
+    if args[0] is None or not args[0].isdigit():
+        notes = notebook.display_notes(tag=args[0] or None, original_indices=True)
+        print(build_notes_table(notes, original_indices=True))
+    else:
+        n = int(args[0])
+        for i, tab in enumerate(notebook.iterator_notes(n)):
+            if tab == "continue":
+                input(G + "Press <Enter> to continue..." + N)
+            else:
+                table = build_notes_table(tab)
+                print(table)
+    return f"Notes book contain {len(notebook)} note(s)."
+
 
 @input_error
 def search_notes(*args):
