@@ -52,7 +52,7 @@ def input_error(func):
 
 
 def hello(*args):
-    return "\033[32mHow can I help you?\033[0m"
+    return f"{G}How can I help you?{N}"
 
 
 def good_bye(*args):
@@ -76,25 +76,25 @@ def undefined(*args):
 @input_error
 def save(*args):
     if not args[0]:
-        raise ValueError("Give me a filename")
+        raise ValueError("Give me a filename.")
 
     home_path = Path.home()
     file_path = home_path / args[0]
     PickleStorage.export_file(contacts, file_path)
-    return f"File {args[0]} saved"
+    return f"File {args[0]} saved."
 
 
 @input_error
 def load(*args):
     if not args[0]:
-        raise ValueError("Give me a filename")
+        raise ValueError("Give me a filename.")
 
     home_path = Path.home()
     file_path = home_path / args[0]
     if PickleStorage.is_file_exist(file_path):
         contacts.clear()
         contacts.update(PickleStorage.import_file(file_path))
-        return f"File {args[0]} loaded"
+        return f"File {args[0]} loaded."
     else:
         raise FileNotFoundError
 
@@ -106,36 +106,60 @@ def load(*args):
 def add_contact(*args):
     """Додає контакт по імені."""
 
+    usage_message = f"Example of usage: {G}add contact {Y}Username{N}."
+    error_message = None
+
     if not args[0]:
-        raise KeyError("Give me a name, please")
+        error_message = "Give me a name, please."
+
+    if error_message:
+        print(usage_message)
+        raise ValueError(error_message)
 
     contacts.add_record(args[0])
 
-    return f"I added a contact {args[0]} to Addressbook"
+    return f"I added a contact {args[0]} to Addressbook."
 
 
 @input_error
 def remove_contact(*args):
     """Функція-handler видаляє запис з книги."""
 
+    usage_message = f"Example of usage: {G}remove contact {Y}Username{N}."
+    error_message = None
+
     if not args[0]:
-        raise KeyError("Give me a name, please")
+        error_message = "Give me a name, please."
+
+    if error_message:
+        print(usage_message)
+        raise KeyError(error_message)
 
     result = contacts.remove_record(args[0])
 
     if result:
-        return f"Contact {args[0]} was removed"
-    return f"{R}Contact {args[0]} not in address book{N}"
+        return f"Contact {args[0]} was removed."
+    return f"{R}Contact {args[0]} not in address book{N}."
 
 
 @input_error
 def set_phone(*args):
     """Додає телефонный номер в контакт по імені."""
 
+    usage_message = f"Example of usage: {G}set phone {Y}Username 0985467856{N}"
+    error_messageK, error_messageV = None, None
+
     if not args[0]:
-        raise KeyError("Give me a name, please")
+        error_messageK = "Give me a name, please."
     if not args[1]:
-        raise ValueError("Give me a phone, please")
+        error_messageV = "Give me a phone, please."
+
+    if error_messageK:
+        print(usage_message)
+        raise KeyError(error_messageK)
+    if error_messageV:
+        print(usage_message)
+        raise ValueError(error_messageV)
 
     contacts.add_phone(args[0], args[1])
 
@@ -146,12 +170,17 @@ def set_phone(*args):
 def remove_phone(*args):
     """Видаляє телефонный номер в контакт по імені."""
 
+    usage_message = f"Example of usage: {G}remove phone {Y}Username 1{N}"
+    error_message = None
     if not args[0]:
-        raise KeyError("Give me a name, please")
-    if not args[1]:
-        raise ValueError("Give me an index of phone, please.")
-    if not args[1].isdigit():
-        raise ValueError("Index of phone must be a number.")
+        error_message = "Give me a name, please."
+    elif not args[1]:
+        error_message = "Give me an index of phone, please."
+    elif not args[1].isdigit():
+        error_message = "Index of phone must be a number."
+    if error_message:
+        print(usage_message)
+        raise ValueError(error_message)
 
     contacts.delete_phone_by_index(args[0], int(args[1]) - 1)
 
@@ -162,11 +191,21 @@ def remove_phone(*args):
 def set_email(*args):
     """Додає email номер в контакті по імені."""
 
+    usage_message = f"Example of usage: {G}set email {Y}Username my_mail@i.ua{N}"
+    error_messageK, error_messageV = None, None
+
     if not args[0]:
-        raise KeyError("Give me a name, please")
+        error_messageK = "Give me a name, please"
 
     if not args[1]:
-        raise ValueError("Give me a email, please")
+        error_messageV = "Give me a email, please"
+
+    if error_messageK:
+        print(usage_message)
+        raise KeyError(error_messageK)
+    if error_messageV:
+        print(usage_message)
+        raise ValueError(error_messageV)
 
     contacts.add_email(args[0], args[1])
 
@@ -177,12 +216,17 @@ def set_email(*args):
 def remove_email(*args):
     """Видаляє email номер в контакт по імені."""
 
+    usage_message = f"Example of usage: {G}remove email {Y}Username 1{N}"
+    error_message = None
     if not args[0]:
-        raise KeyError("Give me a name, please")
-    if not args[1]:
-        raise ValueError("Give me an index of email, please.")
-    if not args[1].isdigit():
-        raise ValueError("Index of email must be a number.")
+        error_message = "Give me a name, please"
+    elif not args[1]:
+        error_message = "Give me an index of email, please."
+    elif not args[1].isdigit():
+        error_message = "Index of email must be a number."
+    if error_message:
+        print(usage_message)
+        raise ValueError(error_message)
 
     contacts.delete_email_by_index(args[0], int(args[1]) - 1)
 
@@ -192,8 +236,22 @@ def remove_email(*args):
 @input_error
 def set_address(*args):
     """Додає адресу в контакт по імені."""
+
+    usage_message = f"Example of usage: {G}set address {Y}Username Address of user{N}"
+    error_messageK, error_messageV = None, None
+
     if not args[0]:
-        raise KeyError("Give me a name, please")
+        error_messageK = "Give me a name, please"
+
+    if not args[1]:
+        error_messageV = "Give me an address, please"
+
+    if error_messageK:
+        print(usage_message)
+        raise KeyError(error_messageK)
+    if error_messageV:
+        print(usage_message)
+        raise ValueError(error_messageV)
 
     contacts.add_address(args[0], args[1])
 
@@ -204,8 +262,15 @@ def set_address(*args):
 def remove_address(*args):
     """Видаляє email в контакті по імені."""
 
+    usage_message = f"Example of usage: {G}set address {Y}Username Address of user{N}"
+    error_message = None
+
     if not args[0]:
-        raise KeyError("Give me a name, please")
+        error_message = "Give me a name, please."
+
+    if error_message:
+        print(usage_message)
+        raise ValueError(error_message)
 
     contacts.remove_address(args[0])
 
@@ -216,10 +281,21 @@ def remove_address(*args):
 def set_birthday(*args):
     """Функція-handler додає день народження до контакту."""
 
-    if not args[0] or args[0].isdigit():
-        raise KeyError("Give me a name, please")
+    usage_message = f"Example of usage: {G}set birthday {Y}Username 13.03.1989{N}"
+    error_messageK, error_messageV = None, None
+
+    if not args[0]:
+        error_messageK = "Give me a name, please"
+
     if not args[1]:
-        raise ValueError("Give me a date, please")
+        error_messageV = "Give me an birthday in format DD.MM.YYYY, please"
+
+    if error_messageK:
+        print(usage_message)
+        raise KeyError(error_messageK)
+    if error_messageV:
+        print(usage_message)
+        raise ValueError(error_messageV)
 
     contacts.add_birthday(args[0], args[1])
 
@@ -339,12 +415,18 @@ def remove_note(*args):
 
 @input_error
 def add_tag(*args):
+    usage_message = f"Example of usage: {G}add tag {Y}1 Tag{N}"
+    error_message = None
     if not args[0]:
-        raise ValueError("Give me an index first.")
-    if not args[0].isdigit():
-        raise ValueError("Index must be a number.")
-    if not args[1]:
-        raise ValueError("Give me a tag, please.")
+        error_message = "Give me an index first, please."
+    elif not args[1]:
+        error_message = "Index must be a number."
+    elif not args[1].isdigit():
+        error_message = "Give me a tag, please."
+    if error_message:
+        print(usage_message)
+        raise ValueError(error_message)
+
     notebook.add_tag(int(args[0]), args[1])
     return f"I addes tag {args[1]} to note {args[0]}"
 

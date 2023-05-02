@@ -38,17 +38,13 @@ class Birthday(Field):
 
     @Field.value.setter
     def value(self, value):
-        day, month, year = value.split(".")
-        day = day.rjust(2, "0")
-        month = month.rjust(2, "0")
-        rjusted_date = f"{day}.{month}.{year}"
         try:
-            date = datetime.strptime(rjusted_date, "%d.%m.%Y")
+            date = datetime.strptime(value, "%d.%m.%Y")
         except (TypeError, ValueError):
             raise ValueError("Invalid date format. Please use DD.MM.YYYY")
         if date > datetime.today():
             raise ValueError("Date cannot be in the future")
-        self.__value = rjusted_date
+        self.__value = value
 
 
 class Email(Field):
