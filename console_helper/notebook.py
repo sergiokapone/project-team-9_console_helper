@@ -1,6 +1,5 @@
 from collections import namedtuple, UserList
 from datetime import datetime
-from prettytable import PrettyTable
 
 Note = namedtuple("Note", ["tags", "date", "text"])
 
@@ -21,7 +20,7 @@ class Notebook(UserList):
         self.data.pop(index)
 
     def display_notes(self, tag=None, original_indices=False):
-        """Показывает заметки, может фильтровать по тегу, возвращает исходные индексы если original_indices=True"""
+        """Показує нотоатки, може фільтрувати за тегом, повертає вихідні індекси якщо original_indices=True"""
         notes = self.data
         if tag is not None:
             notes = [note for note in notes if tag in note.tags]
@@ -45,7 +44,7 @@ class Notebook(UserList):
         return sorted(self.data, key=lambda note: tuple(note.tags))
 
     def add_tag(self, index, tag):
-        """Добавляет тег к заметке по индексу."""
+        """Додає тег до нотатки за індексом."""
         note = self.data[index]
         note_tags = list(note.tags)
         if tag not in note_tags:
@@ -69,30 +68,3 @@ class Notebook(UserList):
             self.data[index] = note._replace(tags=tuple(note_tags))
             return True
         return False
-
-
-# отладка
-if __name__ == "__main__":
-    notebook = Notebook()
-    notebook.add_note(["Rec"], "Mu fully featured class")
-    notebook.add_note(["Rec"], "My new note")
-    notebook.add_note(["Alarm"], "My new2 note")
-
-    def display_notes_table(notes):
-        table = PrettyTable()
-        table.field_names = ["Index", "Tags", "Cration Date", "Text"]
-        for i, note in enumerate(notes):
-            date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
-            table.add_row([i, ", ".join(note.tags), date_str, note.text])
-        return table
-
-    notebook.add_tag(0, "Curl")
-    notebook.sort_notes_by_tag()
-    b = display_notes_table(notebook.display_notes())
-    print(b)
-
-    notebook.remove_note(0)
-    notebook.edit_note(0, "Wow!")
-
-    a = display_notes_table(notebook.display_notes())
-    print(a)
