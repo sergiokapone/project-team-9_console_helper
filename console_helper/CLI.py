@@ -419,10 +419,8 @@ def add_tag(*args):
     error_message = None
     if not args[0]:
         error_message = "Give me an index first, please."
-    elif not args[1]:
+    elif not args[0]:
         error_message = "Index must be a number."
-    elif not args[1].isdigit():
-        error_message = "Give me a tag, please."
     if error_message:
         print(usage_message)
         raise ValueError(error_message)
