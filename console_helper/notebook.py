@@ -12,6 +12,7 @@ class Notebook(UserList):
 
     def add_note(self, tags, note_text):
         """Додає нотатку з одним тегом"""
+
         note = Note(tags=tags, date=datetime.now(), text=note_text)
         self.data.append(note)
 
@@ -30,6 +31,16 @@ class Notebook(UserList):
             ]
         return notes
 
+    def iterator_notes(self, n: int = 10):
+        """Метод ітерується по записам і виводить їх частинами по n-штук."""
+        items = self.data
+        for i, note in enumerate(items):
+            if i % n == 0:
+                items[i : i + n]
+                yield [(note, j) for j in range(i, i + n) if j < len(items)]
+                if i + n < len(items):
+                    yield "continue"
+
     def find_notes(self, search_term):
         """Шукає нотатки за текстом"""
         search_term = search_term.lower()
@@ -47,6 +58,7 @@ class Notebook(UserList):
         """Додає тег до нотатки за індексом."""
         note = self.data[index]
         note_tags = list(note.tags)
+
         if tag not in note_tags:
             note_tags.append(tag)
             self.data[index] = note._replace(tags=tuple(note_tags))

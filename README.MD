@@ -73,8 +73,9 @@ with names
 To manage contacts in your address book, You can type commands by following examples:
 
 - `>>> show contacts` --- shows table of contacts in address book.
-- `>>> show contacts 3` where `3` is a number of output records, `20` is by default
+- `>>> show contacts 3` displaying contacts in chunks of `3` items, `20` is by default
 - `>>> add contact Username` --- add empty contact `Username` to the address book.
+- `>>> add contact Someone 03.05.1995 his_mail@i.ua` --- add contact `Someone` to the address book with date of birthday `03.05.1995` and email `his_mail@i.ua`.
 - `>>> set phone Username 0935841245` --- add phone[^1] to contact `Username` in address book.
 - `>>> set birthday Username 12.12.1978` --- add birthday[^1] to contact `Username` in address book.
 - `>>> set email my_name@gmail.com` --- add email[^1] `my_name@gmail.com` to contact `Username` in address book.
@@ -93,15 +94,18 @@ To manage contacts in your address book, You can type commands by following exam
 
 - `>>> show notes` --- just show all notes.
 - `>>> show notes Rec` --- show all notes with tag `Rec`.
+- `>>> show notes 3` --- displaying notes in chunks of `3` items.
 - `>>> add note Tag Text of your note` --- add note with `Tag`[^2] and text `Text of your note`.
-- `>>> add tag 1 Mytag` --- add tag `Mytag` to note with index `1`.
+- `>>> add tag 1 Mytag` --- add tag `Mytag`[^3] to note with index `1`.
 - `>>> remove tag 4 Tag` --- removes `Tag` for note with index `4`.
 - `>>> change note 1 New text` --- change note `1` with `New text`.
 - `>>> remove note 2` --- remove note with index `2`.
 
 [^2]: When creating a note, you can assign only one single-word tag. You can add subsequent tags with `add tag` command.
 
-### Exit programm
+[^3] Tag cannot be a number.
+
+### Exit program
 
 To exit the program just type following commands `good bye`, `close` or `exit`.
 Another possibility to exit without any messages is typing `.`.
