@@ -10,7 +10,7 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completion, Completer
 from prompt_toolkit.shortcuts import clear
 
-from prettytable import PrettyTable, SINGLE_BORDER
+from prettytable.colortable import ColorTable, Themes
 
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
@@ -308,7 +308,7 @@ def upcoming_birthdays(*args):
         raise TypeError("Set days you interested")
     days = int(args[0])
     result = contacts.upcoming_birthdays(days)
-    return f"{N}{pretty_print(result)}{N}"
+    return f"{N}{build_contacts_table(result)}{N}"
 
 
 @input_error
@@ -319,15 +319,15 @@ def search_contact(*args):
     results = contacts.find_records(args[0])
 
     if results:
-        return f"{N}{pretty_print(results)}{N}"
+        return f"{N}{build_contacts_table(results)}{N}"
     return "By your request found nothing"
 
 
-def pretty_print(contacts):
-    table = PrettyTable()
+def build_contacts_table(contacts):
+    table = ColorTable(theme=Themes.OCEAN)
     table.field_names = ["#", "Name", "Birthday", "Phones", "Emails", "Address"]
     table.align["Emails"] = "l"
-    table.set_style(SINGLE_BORDER)
+    # table.set_style(SINGLE_BORDER)
     for i, record in enumerate(contacts):
         birthday = record.birthday[0].value if record.birthday else "-"
         address = record.address[0] if record.address else "-"
@@ -378,7 +378,7 @@ def show_contacts(*args):
         if tab == "continue":
             input(G + "Press <Enter> to continue..." + N)
         else:
-            table = pretty_print(tab)
+            table = build_contacts_table(tab)
             # table.align["Emails"] = "l"
             # Обновляем номера контактов в колонке #
             for i, row in enumerate(table._rows):
@@ -432,10 +432,10 @@ def add_tag(*args):
 
 
 def build_notes_table(notes, original_indices=False):
-    table = PrettyTable()
+    table = ColorTable(theme=Themes.OCEAN)
     table.field_names = ["Index", "Tags", "Creation Date", "Text"]
     table.max_width["Text"] = 79
-    table.set_style(SINGLE_BORDER)
+    # table.set_style(SINGLE_BORDER)
     for note, index in notes:
         if original_indices:
             index = notebook.data.index(note)
