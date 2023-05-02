@@ -315,7 +315,7 @@ def upcoming_birthdays(*args):
 @input_error
 def search_contact(*args):
     if not args[0]:
-        raise KeyError("Give me a some string, please")
+        raise KeyError("Give me a some name, please")
 
     results = contacts.find_records(args[0])
 
