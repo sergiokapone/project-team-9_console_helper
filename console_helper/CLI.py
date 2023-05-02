@@ -24,7 +24,7 @@ from .serializer import PickleStorage
 
 from .filesorter import sort_folder
 
-from .colors import G, B, P, R, N, Y
+from .colors import *
 
 
 # ================================= Decorator ================================#
@@ -335,7 +335,7 @@ def build_contacts_table(contacts):
         emails_str = _get_emails_str(record.emails)
         table.add_row(
             [
-                i + 1,
+                f"{W}{i + 1}{N}",
                 f"{G}{record.name}{N}",
                 f"{B}{birthday}{N}",
                 phones_str,
@@ -352,7 +352,7 @@ def _get_phones_str(phones):
         return "-"
     phones_str = ""
     for i, phone in enumerate(phones):
-        phones_str += f"{i+1}. {phone.value}\n"
+        phones_str += f"{W}{i+1}. {B}{phone.value}{N}\n"
     return phones_str[:-1]
 
 
@@ -361,7 +361,7 @@ def _get_emails_str(emails):
         return "-"
     emails_str = ""
     for i, email in enumerate(emails):
-        emails_str += f"{i+1}. {P}{email.value}{N}\n"
+        emails_str += f"{W}{i+1}. {P}{email.value}{N}\n"
     return emails_str[:-1]
 
 
@@ -442,8 +442,8 @@ def build_notes_table(notes, original_indices=False):
         date_str = note.date.strftime("%Y-%m-%d %H:%M:%S")
         table.add_row(
             [
-                f"{G}{index}{N}",
-                ", ".join(note.tags),
+                f"{W}{index}{N}",
+                G + ", ".join(note.tags) + N,
                 f"{Y}{date_str}{N}",
                 f"{B}{note.text}{N}",
             ],
