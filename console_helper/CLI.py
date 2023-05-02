@@ -59,7 +59,8 @@ def good_bye(*args):
     os.system("cls" if os.name == "nt" else "clear")
     save(CONTACT_FILE)
     save_notes(NOTES_FILE)
-    return "Good bye! See you later.\nDotn't warry, your data was saved."
+    print("See you later.\nDotn't warry, your data was saved.")
+    return "Good bye!"
 
 
 @input_error
