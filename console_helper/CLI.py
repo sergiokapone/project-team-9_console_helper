@@ -302,7 +302,7 @@ def show_contacts(*args):
             print(table)
             # Обновляем текущий номер контакта
             current_contact_num += len(tab)
-    return f"Address book contain {len(contacts)} contact(s)"
+    return f"Address book contain {len(contacts)} contact(s)."
 
 
 # ============================= Команди для нотаток ========================= #
@@ -311,7 +311,9 @@ def show_contacts(*args):
 @input_error
 def add_note(*args):
     if not args[0]:
-        raise KeyError("Give me a tag and text, please")
+        raise KeyError("Give me a tag and text, please.")
+    if not args[1]:
+        raise KeyError("Give me a text, please.")
 
     notebook.add_note([args[0]], args[1])
     return "I added note"
@@ -319,14 +321,22 @@ def add_note(*args):
 
 @input_error
 def remove_note(*args):
+    if not args[0]:
+        raise ValueError("Give me an index first.")
+    if not args[0].isdigit():
+        raise ValueError("Index must be a number.")
     notebook.remove_note(int(args[0]))
     return "I removed note"
 
 
 @input_error
 def add_tag(*args):
+    if not args[0]:
+        raise ValueError("Give me an index first.")
     if not args[0].isdigit():
-        raise TypeError("Index must be a number")
+        raise ValueError("Index must be a number.")
+    if not args[1]:
+        raise ValueError("Give me a tag, please.")
     notebook.add_tag(int(args[0]), args[1])
     return f"I addes tag {args[1]} to note {args[0]}"
 
