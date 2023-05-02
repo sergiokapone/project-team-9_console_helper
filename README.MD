@@ -16,6 +16,7 @@ with names
 
 - Clone repository `https://github.com/sergiokapone/project-team-9_console_helper.git`
 - Create virtual environment in folder contains `setup.py`
+- Type `activete.cmd` in command line.
 - To install a module in a virtual environment, type the `install.cmd` in console.
 - To start the assistant, type `assistant` in console.
 
