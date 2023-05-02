@@ -148,6 +148,10 @@ def remove_phone(*args):
 
     if not args[0]:
         raise KeyError("Give me a name, please")
+    if not args[1]:
+        raise ValueError("Give me an index of phone, please.")
+    if not args[1].isdigit():
+        raise ValueError("Index of phone must be a number.")
 
     contacts.delete_phone_by_index(args[0], int(args[1]) - 1)
 
@@ -175,6 +179,10 @@ def remove_email(*args):
 
     if not args[0]:
         raise KeyError("Give me a name, please")
+    if not args[1]:
+        raise ValueError("Give me an index of email, please.")
+    if not args[1].isdigit():
+        raise ValueError("Index of email must be a number.")
 
     contacts.delete_email_by_index(args[0], int(args[1]) - 1)
 
