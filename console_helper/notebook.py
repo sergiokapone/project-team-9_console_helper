@@ -59,6 +59,16 @@ class Notebook(UserList):
     def __len__(self):
         return len(self.data)
 
+    def remove_tag(self, index, tag):
+        """Видаляє тег із нотатки"""
+        note = self.data[index]
+        note_tags = list(note.tags)
+        if tag in note_tags:
+            note_tags.remove(tag)
+            self.data[index] = note._replace(tags=tuple(note_tags))
+            return True
+        return False
+
 
 # отладка
 if __name__ == "__main__":

@@ -60,6 +60,7 @@ with names
 - `save notes`: Saves the notes to a file.
 - `load notes`: Loads the notes from a file.
 - `change note`: Edit note by index.
+- `remove tag`: Removes Tag for specified note index.
 
 ## Usage Examples
 
@@ -96,6 +97,7 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> add tag 1 Mytag` --- add tag `Mytag` to note with index `1`.
 - `>>> remove note 2` --- remove note with index `2`.
 - `>>> change note 1 New text` --- change note `1` with `New text`.
+- `>>> remove tag 4 Tag` --- removes `Tag` for note with index `4`.
 
 [^2]: When creating a note, you can assign only one tag. You can add subsequent tags with `add tag` command.
 

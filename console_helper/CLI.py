@@ -399,6 +399,22 @@ def change_note(*args):
 
 
 @input_error
+def remove_tag(*args):
+    if not args[0]:
+        raise ValueError("Give me an index first.")
+    if not args[0].isdigit():
+        raise ValueError("Index must be a number.")
+    if not args[1]:
+        raise ValueError("Give me a tag, please.")
+
+    result = notebook.remove_tag(int(args[0]), args[1])
+    if result:
+        return f"I changed tag {args[1]} for note with index {args[0]}"
+    else:
+        raise ValueError(f"Tag {args[1]} not found for this note")
+
+
+@input_error
 def load_notes(*args):
     if not args[0]:
         raise ValueError("Give me a filename")
@@ -473,6 +489,7 @@ COMMANDS = {
     "load notes": load_notes,
     "search notes": search_notes,
     "change note": change_note,
+    "remove tag": remove_tag,
     # --- Sorting folder commnad ---
     "sort folder": sort_folder_cli,
     # --- Googd bye commnad ---
