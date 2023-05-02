@@ -4,7 +4,7 @@ Console Assistant is a `python 3.x`-based command-line assistant that allows
 you to manage your contacts and notes.
 
 The assistant saves contacts and notes to the folder of the current user.
-For example, in `Windows` is a folder `C:Users\<Usaer>\`
+For example, in `Windows` is a folder `C:\Users\<Usaer>\`
 with names
 
 - `contacts.bin`
@@ -19,14 +19,14 @@ with names
 - To install a module in a virtual environment, type the `install.cmd` in console.
 - To start the assistant, type `assistant` in console.
 
-## Hello and welcome commands
+## Commands
+
+### Hello and welcome commands
 
 - `help`: Displays a list of available commands and their descriptions.
 - `hello`: Greets the user.
 - `good bye`, `close`, `exit`: Exits the program.
 - `.` exits the program without messages.
-
-## Commands
 
 ### Manage contacts commands
 
