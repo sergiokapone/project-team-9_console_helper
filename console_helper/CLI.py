@@ -429,10 +429,17 @@ def show_contacts(*args):
 
 @input_error
 def add_note(*args):
+    usage_message = f"Example of usage: {G}add note {Y}Tag Text{N}"
+    error_message = None
     if not args[0]:
-        raise KeyError("Give me a tag and text, please.")
+        error_message = "Give me a tag and text, please."
     if not args[1]:
-        raise KeyError("Give me a text, please.")
+        error_message = "Give me a text, please."
+    if args[0] is not None and args[0].isdigit():
+        error_message = "Tag cannot be a number."
+    if error_message:
+        print(usage_message)
+        raise ValueError(error_message)
 
     notebook.add_note([args[0]], args[1])
     return "I added note"
@@ -452,16 +459,21 @@ def remove_note(*args):
 def add_tag(*args):
     usage_message = f"Example of usage: {G}add tag {Y}1 Tag{N}"
     error_message = None
-    if not args[0]:
+    if args[0] is None:
         error_message = "Give me an index first, please."
-    elif not args[0]:
+    elif not args[0].isdigit():
         error_message = "Index must be a number."
+    elif args[1] is None:
+        error_message = "Give me a tag, please."
+    elif args[1].isdigit():
+        error_message = "Tag cannot be a number."
+
     if error_message:
         print(usage_message)
         raise ValueError(error_message)
 
     notebook.add_tag(int(args[0]), args[1])
-    return f"I addes tag {args[1]} to note {args[0]}"
+    return f"I added tag {args[1]} to note {args[0]}."
 
 
 def build_notes_table(notes, original_indices=False):
