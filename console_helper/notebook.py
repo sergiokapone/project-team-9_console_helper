@@ -45,11 +45,12 @@ class Notebook(UserList):
         return sorted(self.data, key=lambda note: tuple(note.tags))
 
     def add_tag(self, index, tag):
-        """Додає текст до нотатки"""
+        """Добавляет тег к заметке по индексу."""
         note = self.data[index]
         note_tags = list(note.tags)
-        note_tags.append(tag)
-        self.data[index] = note._replace(tags=tuple(note_tags))
+        if tag not in note_tags:
+            note_tags.append(tag)
+            self.data[index] = note._replace(tags=tuple(note_tags))
 
     def change_note(self, index, new_text):
         """Замінює текст нотатки"""

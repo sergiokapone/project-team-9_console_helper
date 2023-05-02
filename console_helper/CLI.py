@@ -59,16 +59,19 @@ def good_bye(*args):
     os.system("cls" if os.name == "nt" else "clear")
     save(CONTACT_FILE)
     save_notes(NOTES_FILE)
+    print("See you later.\nDotn't warry, your data was saved.")
     return "Good bye!"
 
 
 @input_error
 def undefined(*args):
+    """Реакція на невідому команду"""
+
     if args[0] not in list(COMMANDS.keys()):
         matches = get_close_matches(args[0], list(COMMANDS.keys()))
         if matches:
             suggestion = matches[0]
-            return f"Command {R + args[0] + N} not found. Possibly you mean {Y + suggestion + N}?"
+            return f"{W}Command {R + args[0] + N} {W}not found. Possibly you mean {Y + suggestion + N}?"
         else:
             return R + "What do you mean?" + N
 
@@ -328,7 +331,7 @@ def upcoming_birthdays(*args):
 @input_error
 def search_contact(*args):
     if not args[0]:
-        raise KeyError("Give me a some string, please")
+        raise KeyError("Give me a some name, please")
 
     results = contacts.find_records(args[0])
 
