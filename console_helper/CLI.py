@@ -1,5 +1,4 @@
 """Реалізація інтерфейсу командного рядка"""
-
 import re
 import os
 import os.path
@@ -105,23 +104,58 @@ def load(*args):
 # ========================= Робота з контактами ============================= #
 
 
+def parse_contact_params(string):
+    phone_regex = re.compile(r"\d{10}")
+    date_regex = re.compile(r"\d{2}\.\d{2}\.\d{4}")
+    email_regex = re.compile(r"[\w.-]+@[a-zA-Z]+\.[a-zA-Z]{2,}")
+
+    phone = phone_regex.search(string)
+    date = date_regex.search(string)
+    email = email_regex.search(string)
+
+    phone = phone.group(0) if phone else None
+    date = date.group(0) if date else None
+    email = email.group(0) if email else None
+
+    return phone, date, email
+
+
 @input_error
 def add_contact(*args):
-    """Додає контакт по імені."""
-
-    usage_message = f"Example of usage: {G}add contact {Y}Username{N}."
+    """Добавляет контакт с указанными параметрами"""
+    usage_message = (
+        f"Example of usage: {G}add contact {Y}Username{N} [phone1] [birthday] [email]."
+    )
     error_message = None
-
-    if not args[0]:
-        error_message = "Give me a name, please."
+    name = args[0]
+    if not name:
+        error_message = "Please provide a name for the contact."
 
     if error_message:
         print(usage_message)
         raise ValueError(error_message)
 
-    contacts.add_record(args[0])
+    contacts.add_record(name)
+    rest_args = " ".join(args[1:]) if args[1:] != (None,) else False
 
-    return f"I added a contact {args[0]} to Addressbook."
+    if rest_args:
+        parsed_params = parse_contact_params(" ".join(args[1:]))
+        print(parsed_params)
+        phone = parsed_params[0]
+        birthday = parsed_params[1]
+        email = parsed_params[2]
+        print(phone, birthday, email)
+
+        if phone:
+            contacts.add_phone(name, phone)
+
+        if birthday:
+            contacts.add_birthday(name, birthday)
+
+        if email:
+            contacts.add_email(name, email)
+
+    return f"I added a contact {name} to the address book."
 
 
 @input_error
@@ -192,7 +226,7 @@ def remove_phone(*args):
 
 @input_error
 def set_email(*args):
-    """Додає email номер в контакті по імені."""
+    """Додає email адресу в контакті по імені."""
 
     usage_message = f"Example of usage: {G}set email {Y}Username my_mail@i.ua{N}"
     error_messageK, error_messageV = None, None
