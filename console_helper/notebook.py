@@ -29,7 +29,18 @@ class Notebook(UserList):
                 (note, index) for index, note in enumerate(self.data) if note in notes
             ]
         return notes
+    
+    def iterator_notes(self, n: int = 10):
+        """Метод ітерується по записам і виводить їх частинами по n-штук."""
 
+        items = self.data
+        for i in range(0, len(items), n):           
+            data_slice = items[i : i + n]
+            yield data_slice
+            if i + n < len(items):
+                yield "continue"
+                 
+                
     def find_notes(self, search_term):
         """Шукає нотатки за текстом"""
         search_term = search_term.lower()
