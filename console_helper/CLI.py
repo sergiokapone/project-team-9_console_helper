@@ -134,8 +134,10 @@ def add_contact(*args):
                     contacts.add_phone(list_of_param[0], list_of_param[i])
                 elif datetime.datetime.strptime(list_of_param[i], "%d.%m.%Y"):
                     contacts.add_birthday(list_of_param[0], list_of_param[i])
+                    print("...")
 
     return f"I added a contact {args[0]} to Addressbook."
+
 
 
 @input_error
