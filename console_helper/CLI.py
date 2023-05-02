@@ -311,7 +311,7 @@ def show_contacts(*args):
 @input_error
 def add_note(*args):
     if not args[0]:
-        raise KeyError("Give me a name, please")
+        raise KeyError("Give me a tag and text, please")
 
     notebook.add_note([args[0]], args[1])
     return "I added note"

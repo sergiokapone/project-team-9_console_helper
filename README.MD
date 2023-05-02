@@ -1,6 +1,6 @@
-# Console Assistant (command project)
+# Console Assistant
 
-Console Assistant is a `python 3.x`-based command-line assistant that allows
+Console Assistant is a `python 3.x`-based command-line program that allows
 you to manage your contacts and notes.
 
 The assistant saves contacts and notes to the folder of the current user.
