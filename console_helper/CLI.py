@@ -65,6 +65,8 @@ def good_bye(*args):
 
 @input_error
 def undefined(*args):
+    """Реакція на невідому команду"""
+
     if args[0] not in list(COMMANDS.keys()):
         matches = get_close_matches(args[0], list(COMMANDS.keys()))
         if matches:
@@ -315,7 +317,7 @@ def upcoming_birthdays(*args):
 @input_error
 def search_contact(*args):
     if not args[0]:
-        raise KeyError("Give me a some string, please")
+        raise KeyError("Give me a some name, please")
 
     results = contacts.find_records(args[0])
 
