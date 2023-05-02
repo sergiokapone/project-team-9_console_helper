@@ -71,7 +71,7 @@ def undefined(*args):
         matches = get_close_matches(args[0], list(COMMANDS.keys()))
         if matches:
             suggestion = matches[0]
-            return f"Command {R + args[0] + N} not found. Possibly you mean {Y + suggestion + N}?"
+            return f"{W}Command {R + args[0] + N} {W}not found. Possibly you mean {Y + suggestion + N}?"
         else:
             return R + "What do you mean?" + N
 
