@@ -65,6 +65,8 @@ def good_bye(*args):
 
 @input_error
 def undefined(*args):
+    """Реакція на невідому команду"""
+
     if args[0] not in list(COMMANDS.keys()):
         matches = get_close_matches(args[0], list(COMMANDS.keys()))
         if matches:
