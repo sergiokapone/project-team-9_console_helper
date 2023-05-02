@@ -26,8 +26,9 @@ with names
 
 - `help`: Displays a list of available commands and their descriptions.
 - `hello`: Greets the user.
-- `good bye`, `close`, `exit`: Exits the program.
-- `.` exits the program without messages.
+- `good bye`, `close`, `exit`: Exits the program with saving data.
+- `.` exits the program without messages with saving data.
+- `*` exits the program without messages without saving data.
 
 ### Manage contacts commands
 
@@ -112,3 +113,4 @@ Another possibility to exit without any messages is typing `.`.
 
 After executing the specified commands, the application will save your data automatically.
 Upon subsequent program entry, the data will be loaded automatically.
+But if you type `*` the application exit without saving your data.

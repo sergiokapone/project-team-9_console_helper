@@ -719,6 +719,8 @@ def main():
             save(CONTACT_FILE)
             save_notes(NOTES_FILE)
             return
+        if command.strip() == "*":
+            return
 
         params = parse_command(command)
         handler = get_handler(*params)
