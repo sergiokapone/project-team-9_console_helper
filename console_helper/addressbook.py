@@ -70,7 +70,7 @@ class AddressBook(UserList):
         for record in self.data:
             if record.name == name:
                 # print(f"Contact with {name} already exist!")
-                return
+                raise ValueError("Contact already exist in AddressBook.")
 
         # Если контакта с таким именем еще нет, то создаем новый
         birthday = [Birthday(birthday) for birthday in birthday] if birthday else []
