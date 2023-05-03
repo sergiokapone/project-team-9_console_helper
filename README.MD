@@ -21,6 +21,7 @@ with names
 - To start the assistant, type `assistant` in console.
 
 The following packages are required to install the package:
+
 ```txt
 prettytable==3.7.0
 prompt-toolkit==3.0.0
