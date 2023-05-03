@@ -103,8 +103,7 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> remove note 2` --- remove note with index `2`.
 
 [^2]: When creating a note, you can assign only one single-word tag. You can add subsequent tags with `add tag` command.
-
-[^3] Tag cannot be a number.
+[^3]: Tag cannot be a number.
 
 ### Exit program
 
