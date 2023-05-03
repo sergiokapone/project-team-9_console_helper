@@ -20,6 +20,14 @@ with names
 - To install a module in a virtual environment, type the `install.cmd` in console.
 - To start the assistant, type `assistant` in console.
 
+The following packages are required to install the package:
+```txt
+prettytable==3.7.0
+prompt-toolkit==3.0.0
+Pygments==2.15.1
+transliterate==1.10.2
+```
+
 ## Commands
 
 ### Hello and welcome commands
