@@ -119,8 +119,8 @@ class AddressBook(UserList):
         for record in self.data:
             if record.name == name:
                 record.address.clear()
-                return
-        return f"Contact with name {name} not found"
+                return True
+        return False
 
     def add_birthday(self, name, birthday):
         for record in self.data:
@@ -135,12 +135,14 @@ class AddressBook(UserList):
             if record.name == name:
                 del record.phones[phone_index]
                 return True
+        return False
 
     def delete_email_by_index(self, name, email_index):
         for record in self.data:
             if record.name == name:
                 del record.emails[email_index]
                 return True
+        return False
 
     def upcoming_birthdays(self, days):
         """Метод виводить список контактів у яких день народження протягоь days днів"""

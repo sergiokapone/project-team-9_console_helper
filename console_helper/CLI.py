@@ -217,9 +217,10 @@ def remove_phone(*args):
         print(usage_message)
         raise ValueError(error_message)
 
-    contacts.delete_phone_by_index(args[0], int(args[1]) - 1)
-
-    return f"I removed a phone of contact {args[0]}"
+    result = contacts.delete_phone_by_index(args[0], int(args[1]) - 1)
+    if result:
+        return f"I removed a phone of contact {args[0]}"
+    return f"{R}No contact {args[0]} in AddressBook.{N}"
 
 
 @input_error
@@ -263,9 +264,11 @@ def remove_email(*args):
         print(usage_message)
         raise ValueError(error_message)
 
-    contacts.delete_email_by_index(args[0], int(args[1]) - 1)
+    result = contacts.delete_email_by_index(args[0], int(args[1]) - 1)
 
-    return f"I removed a email of contact {args[0]}"
+    if result:
+        return f"I removed a email of contact {args[0]}"
+    return f"{R}No contact {args[0]} in AddressBook.{N}"
 
 
 @input_error
@@ -307,9 +310,10 @@ def remove_address(*args):
         print(usage_message)
         raise ValueError(error_message)
 
-    contacts.remove_address(args[0])
-
-    return f"I removed a address of contact {args[0]}"
+    result = contacts.remove_address(args[0])
+    if result:
+        return f"I removed a address of contact {args[0]}"
+    return f"{R}No contact {args[0]} in AddressBook.{N}"
 
 
 @input_error
