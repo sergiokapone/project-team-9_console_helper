@@ -362,6 +362,16 @@ def search_contact(*args):
     return "By your request found nothing"
 
 
+@input_error
+def show_contact(*args):
+    if not args[0]:
+        raise KeyError("Give me a some name, please")
+    result = contacts.find_contact_by_name(args[0])
+    if result is not None:
+        return f"{N}{build_contacts_table(result)}{N}"
+    return f"{R}Contact {args[0]} not found.{N}"
+
+
 def build_contacts_table(contacts):
     table = ColorTable(theme=Themes.OCEAN)
     table.field_names = ["#", "Name", "Birthday", "Phones", "Emails", "Address"]
@@ -625,7 +635,7 @@ COMMANDS = {
     "upcoming birthdays": upcoming_birthdays,
     "show contacts": show_contacts,
     "search contact": search_contact,
-    "show contact": search_contact,
+    "show contact": show_contact,
     "remove contact": remove_contact,
     "save": save,
     "load": load,

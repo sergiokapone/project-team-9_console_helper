@@ -180,8 +180,11 @@ class AddressBook(UserList):
 
         return found_contacts
 
-    def show_contact(self):
-        return self
+    def find_contact_by_name(self, name):
+        for record in self.data:
+            if record.name == name:
+                return [record]
+        return None
 
     def iterator(self, n: int = 10):
         """Метод ітерується по записам і виводить їх частинами по n-штук."""
