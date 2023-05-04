@@ -15,15 +15,23 @@ with names
 ## Install and Run Assistant
 
 - Clone repository 
-```https://github.com/sergiokapone/project-team-9_console_helper.git```
+```
+https://github.com/sergiokapone/project-team-9_console_helper.git
+```
 - Create virtual environment in folder contains `setup.py`, in command line type
-```python -m venv .venv```
+```
+python -m venv .venv
+```
 or
-```py -m venv .venv```
+```
+py -m venv .venv
+```
 - Type `activate.cmd` in command line.
 - To install a module in a virtual environment, type the `install.cmd` in console.
 - To start the assistant, in console type:
-```assistant```
+```
+assistant
+```
 
 The following packages are required to install the package:
 
