@@ -1,4 +1,4 @@
-# Console Assistant
+Console Assistant
 
 Console Assistant is a `python 3.x`-based command-line program that allows
 you to manage your contacts and notes, sort files in a folder by category and delete file copies..
@@ -14,21 +14,30 @@ with names
 
 ## Install and Run Assistant
 
-- Clone repository 
+- Clone repository
+
 ```
 https://github.com/sergiokapone/project-team-9_console_helper.git
 ```
+
 - Create virtual environment in folder contains `setup.py`, in command line type
+
 ```
 python -m venv .venv
 ```
+
 or
+
 ```
 py -m venv .venv
 ```
+
 - Type `activate.cmd` in command line.
+
 - To install a module in a virtual environment, type the `install.cmd` in console.
+
 - To start the assistant, in console type:
+
 ```
 assistant
 ```
@@ -41,7 +50,9 @@ prompt-toolkit==3.0.0
 Pygments==2.15.1
 transliterate==1.10.2
 ```
+
 Install requirements
+
 ```
 pip install -r requirements.txt
 ```
@@ -114,7 +125,6 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> remove email Username 2` --- remove user email by index `2`.
 
 [^1]: If the contact is missing, it will be added automatically.
-
 [^2]: Order doesn't matter.
 
 ### Manage notes
@@ -131,7 +141,6 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> remove note 2` --- remove note with index `2`.
 
 [^3]: When creating a note, you can assign only one single-word tag. You can add subsequent tags with `add tag` command.
-
 [^4]: Tag cannot be a number.
 
 ### Exit program
