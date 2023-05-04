@@ -1,10 +1,10 @@
 # Console Assistant
 
 Console Assistant is a `python 3.x`-based command-line program that allows
-you to manage your contacts and notes.
+you to manage your contacts and notes, sort files in a folder by category and delete file copies..
 
 The assistant saves contacts and notes to the folder of the current user.
-For example, in `Windows` is a folder `C:\Users\<Usaer>\`
+For example, in `Windows` it's a folder `C:\Users\<User>\`
 with names
 
 - `contacts.bin`
@@ -33,7 +33,9 @@ py -m venv .venv
 ```
 
 - Type `activate.cmd` in command line.
+
 - To install a module in a virtual environment, type the `install.cmd` in console.
+
 - To start the assistant, in console type:
 
 ```
