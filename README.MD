@@ -1,4 +1,4 @@
-# Console Assistant
+Console Assistant
 
 Console Assistant is a `python 3.x`-based command-line program that allows
 you to manage your contacts and notes, sort files in a folder by category and delete file copies..
@@ -40,6 +40,21 @@ py -m venv .venv
 
 ```
 assistant
+```
+
+The following packages are required to install the package:
+
+```txt
+prettytable==3.7.0
+prompt-toolkit==3.0.0
+Pygments==2.15.1
+transliterate==1.10.2
+```
+
+Install requirements
+
+```
+pip install -r requirements.txt
 ```
 
 ## Commands
