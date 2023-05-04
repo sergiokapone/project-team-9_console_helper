@@ -115,6 +115,13 @@ class AddressBook(UserList):
                 return True
         return False
 
+    def update_name(self, name, new_name):
+        for i, record in enumerate(self.data):
+            if record.name == name:
+                self.data[i] = record._replace(name=new_name)
+                return True
+        return False
+
     def remove_address(self, name):
         for record in self.data:
             if record.name == name:

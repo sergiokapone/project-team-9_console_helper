@@ -351,6 +351,18 @@ def upcoming_birthdays(*args):
 
 
 @input_error
+def change_name(*args):
+    if not args[0]:
+        raise ValueError("Give me a some name, please")
+    if not args[1]:
+        raise ValueError("Give me a new name, please")
+    result = contacts.update_name(args[0], args[1])
+    if result:
+        return f"I updatw name {args[0]} -> {args[1]}"
+    return f"{R}No contact {args[0]} in AddressBook.{N}"
+
+
+@input_error
 def search_contact(*args):
     if not args[0]:
         raise KeyError("Give me a some name, please")
@@ -637,6 +649,7 @@ COMMANDS = {
     "search contact": search_contact,
     "show contact": show_contact,
     "remove contact": remove_contact,
+    "change name": change_name,
     "save": save,
     "load": load,
     # --- Manage notes ---
