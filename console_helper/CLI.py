@@ -352,10 +352,19 @@ def upcoming_birthdays(*args):
 
 @input_error
 def change_name(*args):
+    usage_message = f"Example of usage: {G}change name {Y}Old_name New_name{N}"
+    error_message = None
+
     if not args[0]:
-        raise ValueError("Give me a some name, please")
+        error_message = "Give me a some name, please"
+
     if not args[1]:
-        raise ValueError("Give me a new name, please")
+        error_message = "Give me a new name, please"
+
+    if error_message:
+        print(usage_message)
+        raise ValueError(error_message)
+
     result = contacts.update_name(args[0], args[1])
     if result:
         return f"I updatw name {args[0]} -> {args[1]}"
