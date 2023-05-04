@@ -41,6 +41,10 @@ prompt-toolkit==3.0.0
 Pygments==2.15.1
 transliterate==1.10.2
 ```
+Install requirements
+```
+pip install -r requirements.txt
+```
 
 ## Commands
 
