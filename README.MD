@@ -82,6 +82,7 @@ pip install -r requirements.txt
 - `show contact`: Shows the details of a specific contact.
 - `search contact`: Searches for a specific contact by name.
 - `remove contact`: Removes a contact from the list.
+- `change name`: Change name of contact.
 - `save`: save contacts to file.
 - `load`: load contacts from file.
 
@@ -123,6 +124,7 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> remove contact Username` --- remove contact `Uresname`
 - `>>> remove phone Username 1` --- remove user phone by index `1`.
 - `>>> remove email Username 2` --- remove user email by index `2`.
+- `>>> change contact Username Bobo` --- change contact name `Uresname` to new name `Bobo`.
 
 [^1]: If the contact is missing, it will be added automatically.
 [^2]: Order doesn't matter.
