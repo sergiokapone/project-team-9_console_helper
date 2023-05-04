@@ -1,4 +1,4 @@
-Console Assistant
+# Console Assistant
 
 Console Assistant is a `python 3.x`-based command-line program that allows
 you to manage your contacts and notes, sort files in a folder by category and delete file copies..
