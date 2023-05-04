@@ -127,6 +127,7 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> change contact Username Bobo` --- change contact name `Uresname` to new name `Bobo`.
 
 [^1]: If the contact is missing, it will be added automatically.
+
 [^2]: Order doesn't matter.
 
 ### Manage notes
@@ -143,6 +144,7 @@ To manage contacts in your address book, You can type commands by following exam
 - `>>> remove note 2` --- remove note with index `2`.
 
 [^3]: When creating a note, you can assign only one single-word tag. You can add subsequent tags with `add tag` command.
+
 [^4]: Tag cannot be a number.
 
 ### Exit program
