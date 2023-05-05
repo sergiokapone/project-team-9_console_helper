@@ -15,6 +15,7 @@ setup(
         "Pygments",
         "transliterate",
         "prompt-toolkit==3.0",
+        "requests",
     ],
     package_data={
         "": ["README.md"],
