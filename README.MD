@@ -86,6 +86,10 @@ pip install -r requirements.txt
 - `save`: save contacts to file.
 - `load`: load contacts from file.
 
+### Currency exchange"
+
+- `currency`: Get Currency exchange.
+
 ### Sorting Folder
 
 - `sort folder`: Sort folder.

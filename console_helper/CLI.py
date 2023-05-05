@@ -19,6 +19,8 @@ from .addressbook import AddressBook
 
 from .notebook import Notebook
 
+from .currenсy import CurrencyList
+
 from .serializer import PickleStorage
 
 from .filesorter import sort_folder
@@ -609,6 +611,27 @@ def load_notes(*args):
         raise FileNotFoundError
 
 
+# ================================ Валюта =================================== #
+
+
+def get_currency_table(currency_list: CurrencyList):
+    table = ColorTable(theme=Themes.OCEAN)
+    table.max_width["Currency"] = 30
+    table.max_width["Short Name"] = 15
+    table.max_width["Rate"] = 10
+    table.align["Short Name"] = "c"
+    table.align["Rate"] = "c"
+    table.field_names = ["Currency", "Short Name", "Rate"]
+    for currency in currency_list.get_currency_rates():
+        table.add_row([currency.name, currency.cc, currency.rate])
+    return table
+
+
+@input_error
+def get_currency(*args):
+    return get_currency_table(CurrencyList())
+
+
 # =========================================================================== #
 def help_commands(*args):
     """Функція показує перелік всіх команд."""
@@ -661,6 +684,8 @@ COMMANDS = {
     "change name": change_name,
     "save": save,
     "load": load,
+    # --- Валюта ---
+    "currency": get_currency,
     # --- Manage notes ---
     "add note": add_note,
     "add tag": add_tag,
