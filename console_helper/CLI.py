@@ -654,9 +654,9 @@ def get_weather(*args):
         description = description.text.strip()
 
         table = ColorTable(theme=Themes.OCEAN)
-        table.field_widths = [10, 20, None]
         table.field_names = ["City", "Temperature", "Description"]
-        table.add_row([city, temperature, description])
+        table.add_row([f"{Y}{city}{N}", f"{G}{temperature}{N}", description])
+        table._max_width = {"Description": 79}
 
         return table
     else:
