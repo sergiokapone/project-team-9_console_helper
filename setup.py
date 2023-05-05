@@ -16,6 +16,7 @@ setup(
         "transliterate",
         "prompt-toolkit==3.0",
         "requests",
+        "beautifulsoup4",
     ],
     package_data={
         "": ["README.md"],

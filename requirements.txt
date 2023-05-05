@@ -1,7 +1,11 @@
--e git+https://github.com/sergiokapone/project-team-9_console_helper.git@517a409bf7c3cd045882453d4cfe6230b0e1b691#egg=assistant
+-e git+https://github.com/sergiokapone/project-team-9_console_helper.git@2696f96b144039ca69921d313cde0e9e2aac6ffc#egg=assistant
+beautifulsoup4==4.12.2
 black==23.3.0
+certifi==2022.12.7
+charset-normalizer==3.1.0
 click==8.1.3
 colorama==0.4.6
+idna==3.4
 mypy-extensions==1.0.0
 packaging==23.1
 pathspec==0.11.1
@@ -9,7 +13,10 @@ platformdirs==3.5.0
 prettytable==3.7.0
 prompt-toolkit==3.0.0
 Pygments==2.15.1
+requests==2.30.0
 six==1.16.0
+soupsieve==2.4.1
 tomli==2.0.1
 transliterate==1.10.2
+urllib3==2.0.2
 wcwidth==0.2.6

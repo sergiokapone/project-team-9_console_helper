@@ -15,6 +15,9 @@ from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import TerminalFormatter
 
+from bs4 import BeautifulSoup
+import requests
+
 from .addressbook import AddressBook
 
 from .notebook import Notebook
@@ -24,6 +27,7 @@ from .currenсy import CurrencyList
 from .serializer import PickleStorage
 
 from .filesorter import sort_folder
+
 
 from .colors import *
 
@@ -632,6 +636,33 @@ def get_currency(*args):
     return get_currency_table(CurrencyList())
 
 
+# =============================== Погода ==================================== #
+
+#! Не реалізовано пошук по україномовни словам
+
+
+def get_weather(*args):
+    city = args[0]
+    url = f"https://ua.sinoptik.ua/погода-{city}"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    temperature = soup.select_one(".today-temp")
+    description = soup.select_one(".description")
+
+    if temperature and description:
+        temperature = temperature.text
+        description = description.text.strip()
+
+        table = ColorTable(theme=Themes.OCEAN)
+        table.field_widths = [10, 20, None]
+        table.field_names = ["City", "Temperature", "Description"]
+        table.add_row([city, temperature, description])
+
+        return table
+    else:
+        return f"Unable to find weather information for {city}."
+
+
 # =========================================================================== #
 def help_commands(*args):
     """Функція показує перелік всіх команд."""
@@ -686,6 +717,8 @@ COMMANDS = {
     "load": load,
     # --- Валюта ---
     "currency": get_currency,
+    # --- Погода ---
+    "weather in": get_weather,
     # --- Manage notes ---
     "add note": add_note,
     "add tag": add_tag,
