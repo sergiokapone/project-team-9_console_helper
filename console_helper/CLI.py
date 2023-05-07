@@ -8,6 +8,7 @@ from difflib import get_close_matches
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completion, Completer
 from prompt_toolkit.shortcuts import clear
+from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
 
 from prettytable.colortable import ColorTable, Themes
 
@@ -741,13 +742,43 @@ COMMANDS = {
 
 class CommandCompleter(Completer):
     def get_completions(self, document, complete_event):
-        word_before_cursor = document.get_word_before_cursor()
-        matches = [c for c in COMMANDS if c.startswith(word_before_cursor)]
-        for m in matches:
-            yield Completion(m, start_position=-len(word_before_cursor))
+        text_before_cursor = document.current_line_before_cursor
+        command, _, rest = text_before_cursor.partition(" ")
+        if not rest:
+            # Якщо після команди нема нічого, то виконуємо автодоповнення
+            matches = [c for c in COMMANDS if c.startswith(command)]
+            for m in matches:
+                yield Completion(m, display=m, start_position=-len(command))
 
 
-session = PromptSession(completer=CommandCompleter())
+# def get_usage(command):
+#     words = command.split()
+#     if words:
+#         command = words[0]
+#         usage = COMMAND_USAGE.get(command, "")
+#         if usage:
+#             return usage
+
+
+# COMMAND_USAGE = {
+#     "add contact": "add contact Someone 03.05.1995",
+#     "set phone": "set phone Username 0935841245",
+#     "remove phone": "set birthday Username 12.12.1978",
+#     "set email": "set email my_name@gmail.com",
+#     "remove email": "remove email Username 2",
+#     "set address": "",
+#     "remove address": "",
+#     "set birthday": "set birthday Username 12.12.1978",
+#     "upcoming birthdays": "upcoming birthdays 5",
+#     "show contacts": "",
+#     "search contact": "search contact SearchQuery",
+#     "show contact": "show contact Username",
+#     "remove contact": "emove contact Username",
+#     "change name": "change contact Username Bobo",
+# }
+
+
+session = PromptSession(completer=CommandCompleter(), complete_while_typing=True)
 
 command_pattern = "|".join(COMMANDS.keys())
 pattern = re.compile(
@@ -766,7 +797,10 @@ def get_handler(*args):
 
 def wait_for_input():
     while True:
-        inp = session.prompt(">>> ")
+        inp = session.prompt(
+            ">>> ",
+            auto_suggest=AutoSuggestFromHistory(),
+        )
         if inp == "":
             continue
         break
