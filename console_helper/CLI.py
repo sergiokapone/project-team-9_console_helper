@@ -745,36 +745,31 @@ class CommandCompleter(Completer):
         text_before_cursor = document.current_line_before_cursor
         command, _, rest = text_before_cursor.partition(" ")
         if not rest:
-            # Якщо після команди нема нічого, то виконуємо автодоповнення
             matches = [c for c in COMMANDS if c.startswith(command)]
             for m in matches:
                 yield Completion(m, display=m, start_position=-len(command))
-
-
-# def get_usage(command):
-#     words = command.split()
-#     if words:
-#         command = words[0]
-#         usage = COMMAND_USAGE.get(command, "")
-#         if usage:
-#             return usage
+        # else:
+        #     matches = [c for c in COMMANDS if c.startswith(command)]
+        #     for m in matches:
+        #         usage = COMMAND_USAGE.get(m, "")
+        #         yield Completion(usage, display=usage)
 
 
 # COMMAND_USAGE = {
-#     "add contact": "add contact Someone 03.05.1995",
-#     "set phone": "set phone Username 0935841245",
-#     "remove phone": "set birthday Username 12.12.1978",
-#     "set email": "set email my_name@gmail.com",
-#     "remove email": "remove email Username 2",
+#     "add contact": "Someone 03.05.1995",
+#     "set phone": "Username 0935841245",
+#     "remove phone": "Username 12.12.1978",
+#     "set email": "my_name@gmail.com",
+#     "remove email": "rUsername 2",
 #     "set address": "",
 #     "remove address": "",
-#     "set birthday": "set birthday Username 12.12.1978",
-#     "upcoming birthdays": "upcoming birthdays 5",
+#     "set birthday": "Username 12.12.1978",
+#     "upcoming birthdays": "5",
 #     "show contacts": "",
-#     "search contact": "search contact SearchQuery",
-#     "show contact": "show contact Username",
-#     "remove contact": "emove contact Username",
-#     "change name": "change contact Username Bobo",
+#     "search contact": "SearchQuery",
+#     "show contact": "Username",
+#     "remove contact": "Username",
+#     "change name": "Username Bobo",
 # }
 
 
